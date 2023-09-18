@@ -2,10 +2,7 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'App'
-})
+<script setup>
+import { register } from "swiper/element/bundle";
+register();
 </script>
