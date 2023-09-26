@@ -32,6 +32,8 @@ const props = defineProps({
   },
 });
 
+// Define OWM_API_KEY key
+const OWM_API_KEY = process.env.OWM_API_KEY;
 const uniqueUserIds = ref(new Set());
 
 onMounted(() => {
@@ -52,7 +54,7 @@ onMounted(() => {
     // "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png",
     // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
     "http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
-    // "https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=0b02bcfa595f14a8d441720a969ca07c",
+    // `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${OWM_API_KEY}`,
     {
       maxZoom: 10,
       minZoom: 2,
@@ -70,7 +72,7 @@ onMounted(() => {
   });
 
   // Add OWM
-  const appId = "0b02bcfa595f14a8d441720a969ca07c";
+  const appId = OWM_API_KEY;
   const Clouds = OWM.clouds({
     appId,
     opacity: 0.5,

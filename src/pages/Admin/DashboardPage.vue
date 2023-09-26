@@ -64,10 +64,13 @@ const user = computed({
   set: (u) => userStore.setUser(u),
 });
 
+// Define WEATHER_API_KEY key
+const WAPI_KEY = process.env.WEATHER_API_KEY;
+// Request Weather info
 const { data: weather, send: checkWeather } = useRequest(
   () => {
     const instance = alova.Get(
-      `https://api.weatherapi.com/v1/current.json?q=${user.value.city}&key=5389abea97444d31a05110740231909`,
+      `https://api.weatherapi.com/v1/current.json?q=${user.value.city}&key=${WAPI_KEY}`,
       {
         localCache: {
           mode: "placeholder",
