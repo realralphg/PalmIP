@@ -46,6 +46,12 @@ const responded = async (response, method, useAxios = false) => {
       if (![422, 401, 403].includes(response.status)) {
         helpers.notify({ message, status: json.status || 'error' });
       }
+
+      if (json.errors) {
+        json.errors = Object.assign({}, ...Object.keys(json.errors).map(e => {
+          return { [e]: Array.isArray(json.errors[e]) ? json.errors[e][0] : json.errors[e] }
+        }))
+      }
       reject(json);
     } else {
       if (json.token || json.data?.token) {
@@ -58,10 +64,10 @@ const responded = async (response, method, useAxios = false) => {
 }
 // 1. Create an alova instance
 const alova = createAlova({
+  responded,
   statesHook: VueHook,
   baseURL: readEnv('baseURL'),
   requestAdapter: GlobalFetch(),
-  responded: response => response.json(),
   beforeRequest (method) {
     const authStore = useAuthStore();
     // Set header
@@ -88,7 +94,6 @@ const axios = createAlova({
   statesHook: VueHook,
   baseURL: readEnv('baseURL'),
   requestAdapter: axiosRequestAdapter(),
-  responded: response => response.json(),
   beforeRequest (method) {
     const authStore = useAuthStore();
     // Set header
@@ -118,7 +123,7 @@ const axios = createAlova({
      * @param {Method<any, any, any, any, import('alova/GlobalFetch').FetchRequestInit, Response, Headers>} method
      * @returns
      */
-    onError (err, method) {
+    onError (err) {
       const authStore = useAuthStore();
       const userStore = useUserStore();
       const response = err.response
@@ -135,8 +140,13 @@ const axios = createAlova({
           helpers.notify({ message, status: response.data.status || 'error' });
         }
       }
+      if (response.data?.errors) {
+        response.data.errors = Object.assign({}, ...Object.keys(response.data.errors).map(e => {
+          return { [e]: Array.isArray(response.data.errors[e]) ? response.data.errors[e][0] : response.data.errors[e] }
+        }))
+      }
 
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         reject(response.data)
       });
     }
@@ -146,7 +156,7 @@ const axios = createAlova({
 export default boot(async ({ app, router }) => {
   app.config.globalProperties.$alova = alova
 
-  router.beforeResolve(async (to, from) => {
+  router.beforeResolve(async (to) => {
     const authStore = useAuthStore();
     if (authStore.redirect && to.name !== authStore.redirect.name && authStore.redirect !== authStore.redirect) {
       router.push(authStore.redirect);

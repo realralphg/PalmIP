@@ -46,16 +46,29 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat color="grey-8" icon="notifications">
+          <!-- <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating> 2 </q-badge>
             <q-tooltip>Notifications</q-tooltip>
-          </q-btn>
-          <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            <q-tooltip>Account</q-tooltip>
-          </q-btn>
+          </q-btn> -->
+          <q-btn-dropdown rounded flat color="primary">
+            <template #label>
+              <q-avatar size="26px">
+                <img :src="user.avatar" />
+              </q-avatar>
+            </template>
+            <q-list style="min-width: 200px">
+              <q-item clickable v-close-popup :to="{ name: 'user.profile' }">
+                <q-item-section>
+                  <q-item-label>My Profile</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup :to="{ name: 'logout' }">
+                <q-item-section>
+                  <q-item-label>Logout</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
@@ -78,7 +91,7 @@
               :key="link.text"
               :active="$route.name == link.to.name"
               :class="{ 'bg-grey-3': $route.name == link.to.name }"
-              v-for="link in links1"
+              v-for="link in navLinks"
             >
               <q-item-section avatar>
                 <q-icon :name="link.icon" />
@@ -127,18 +140,86 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useUserStore } from "src/stores/user-store";
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+
+const userStore = useUserStore();
+const user = computed({
+  get: () => userStore.user,
+  set: (u) => userStore.setUser(u),
+});
 const leftDrawerOpen = ref(false);
 const search = ref("");
+const route = useRoute();
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
-const links1 = [
-  { icon: "web", text: "Dashboard", to: { name: "user.dashboard" } },
-  { icon: "store", text: "Market Place", to: { name: "user.market" } },
-];
+const navLinks = computed(() => {
+  const links = {
+    user: [
+      { to: { name: "user.dashboard" }, icon: "web", text: "Dashboard" },
+      { to: { name: "market" }, icon: "store", text: "Market Place" },
+      {
+        to: { name: "events.calendar" },
+        icon: "event",
+        text: "Event Calendar",
+      },
+      {
+        to: { name: "crop.price" },
+        icon: "fa-solid fa-wheat-awn",
+        text: "Crop Price",
+      },
+      {
+        to: { name: "admin.dashboard" },
+        icon: "dashboard",
+        text: "Admin Dashboard",
+        hide: user.value.role !== "admin",
+      },
+    ],
+    admin: [
+      {
+        to: { name: "admin.dashboard" },
+        icon: "dashboard",
+        text: "Dashboard",
+      },
+      { to: { name: "admin.market" }, icon: "store", text: "Market Place" },
+      {
+        to: { name: "admin.crop.price" },
+        icon: "fa-solid fa-wheat-awn",
+        text: "Crop Price",
+      },
+      {
+        to: { name: "admin.slides" },
+        icon: "slideshow",
+        text: "Slides",
+      },
+      {
+        to: { name: "admin.events" },
+        icon: "event",
+        text: "Events",
+      },
+      {
+        to: { name: "admin.soil.requirements" },
+        icon: "grass",
+        text: "Soil Requirements",
+      },
+      {
+        to: { name: "admin.disease.outbreaks" },
+        icon: "coronavirus",
+        text: "Disease Outbreaks",
+      },
+      {
+        to: { name: "admin.users" },
+        icon: "groups",
+        text: "Manage Users",
+      },
+    ],
+  };
+  return (links[route.meta.prefix] || links.user).filter((e) => !e.hide);
+});
 </script>
 
 <style lang="sass">

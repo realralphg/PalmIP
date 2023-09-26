@@ -1,13 +1,7 @@
 // outside of a Vue file
-import { Dialog, Notify, copyToClipboard, date } from 'quasar'
+import { Dialog, Notify, copyToClipboard } from 'quasar'
 
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-import { readEnv } from './builder';
 import { useBootstrapStore } from '../stores/bootstrap';
-
-TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo("en-US");
 
 export default {
   chunk (arr, size = 2) {
@@ -19,7 +13,7 @@ export default {
       } else {
         last.push(arr[i]);
       }
-    };
+    }
     return chunkedArray;
   },
   range (size, startAt = 0) {
@@ -43,18 +37,6 @@ export default {
           message: "Failed to copy",
         });
       });
-  },
-  timeAgoStamp (
-    time,
-    format = "facebook",
-    timeFormat = "MMM DD, YYYY h:mm a",
-    switchAfter = 72
-  ) {
-    if (date.getDateDiff(new Date(), new Date(time), "hours") <= switchAfter) {
-      return timeAgo.format(time instanceof Date ? time : new Date(time), format);
-    } else {
-      return date.formatDate(time, timeFormat);
-    }
   },
   /**
    *
@@ -207,6 +189,33 @@ export default {
     let s = str.length > len ? str.substring(0, len - 3) + suffix : str;
     return s.replace("\n", " ").replace(" " + suffix, suffix.slice(1));
   },
+  /**
+   *
+   * @param {String} word
+   */
+  singularize (word) {
+    if (!word) {
+      return
+    }
+    word = word.toString()
+    const lastS = word.toLowerCase().substring(word.length - 1, word.length) == 's'
+    const lastEs = word.toLowerCase().substring(word.length - 2, word.length) == 'es'
+    const lastIes = word.toLowerCase().substring(word.length - 3, word.length) == 'ies'
+
+    if (lastIes) {
+      word = word.substring(word.length - 3, -3)
+    } else if (lastEs) {
+      word = word.substring(word.length - 2, -2)
+    } else if (lastS) {
+      word = word.substring(word.length - 1, -1)
+    }
+    return word
+  },
+  /**
+   *
+   * @param {String} word
+   * @param {Number} number
+   */
   pluralize (word, number) {
     // If the number is 1, return the singular form of the word.
     if (number === 1) {
@@ -221,12 +230,12 @@ export default {
 
     // Check for irregular plurals.
     const irregularPlurals = {
-      "child": "children",
-      "mouse": "mice",
-      "foot": "feet",
-      "goose": "geese",
+      foot: "feet",
+      child: "children",
+      mouse: "mice",
+      goose: "geese",
     };
-    if (irregularPlurals.hasOwnProperty(word)) {
+    if (Object.prototype.hasOwnProperty.call(irregularPlurals, word)) {
       return irregularPlurals[word];
     }
 

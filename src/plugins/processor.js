@@ -78,7 +78,7 @@ export const reboot = (app, done) => {
   return new Promise((resolve, reject) => {
     const bootStore = useBootstrapStore();
     alova
-      .Get("v2/init", {
+      .Get("init", {
         localCache: false,
       }).send()
       .then(async ({ data }) => {
@@ -110,7 +110,7 @@ export const refreshUser = (app) => {
     }
 
     alova
-      .Get("v2/account", {
+      .Get("account", {
         localCache: false,
       }).send()
       .then(({ data }) => {
@@ -131,6 +131,14 @@ export const refreshUser = (app) => {
       });
   });
 };
+
+export const roleRoute = (user, router, validated) => {
+  if (['admin'].includes(user.role)) {
+    return router.replace({ name: user.role === 'admin' ? 'admin.dashboard' : 'user.dashboard' })
+  } else if (validated) {
+    return router.replace({ name: 'user.dashboard' })
+  }
+}
 
 /**
  *
@@ -164,11 +172,7 @@ export const authValidator = (to, router) => {
 
     // Redirect to the appropriate dashboard based on user role and verification status
     if (to.meta.requireGuest) {
-      if (['admin', 'manager', 'dispatch'].indexOf(user.role)) {
-        return router.replace({ name: user.role === 'admin' ? 'admin.dashboard' : 'dispatch.delivery' })
-      } else if (isVerifiedUser || !needsVerification) {
-        return router.replace({ name: 'dashboard' })
-      }
+      return roleRoute(user, router, isVerifiedUser || !needsVerification);
     } else if (!to.meta.requireVerification && !isVerifiedUser && to.name !== 'logout') {
       if (!user.email_verified_at && settings.verify_email) {
         return router.push({ name: 'account.verify', params: { type: 'email' } });
@@ -176,7 +180,7 @@ export const authValidator = (to, router) => {
         return router.push({ name: 'account.verify', params: { type: 'phone' } });
       }
     } else if (to.meta.requireAdmin && user.role !== 'admin') {
-      return router.replace({ name: 'dashboard' });
+      return router.replace({ name: 'user.dashboard' });
     }
   }
 

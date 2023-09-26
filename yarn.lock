@@ -12,10 +12,53 @@
   resolved "https://registry.yarnpkg.com/@alova/adapter-axios/-/adapter-axios-1.1.1.tgz#e288e4d571050e1ac362dc69688c6da0a9d80291"
   integrity sha512-boE8Sd7KCLP3O0CSgJK0BHqAynLUTTKTHWD74laGQo6E0OA6LS6AuiR09Qvgbm+EV3vXwqWoAxzHh47B+FyR3g==
 
+"@alova/scene-vue@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@alova/scene-vue/-/scene-vue-1.2.0.tgz#852c2e136d827277f2f7c443bfecd0c4dab7b56f"
+  integrity sha512-BK40Ox780PXFXNRVyl/P6zSVtEJ4yYw+euvk9LyBlEFYUC5IM3jZ9ikkLPJqcOD8PbgtBmk40GJNlUiPBZqvmw==
+
+"@awesome-cordova-plugins/core@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/core/-/core-6.4.0.tgz#eb16e0a9412d2eaaee8b8e155e362cceb2bbf9a6"
+  integrity sha512-06I5JdTgAgKTby+VG+3sQF5+z4RNCEyVl6y7tz2rICx8MURL1biuh3oGGN1rCQQjsuMZcX5siMBr0NF/OHqxLQ==
+  dependencies:
+    "@types/cordova" latest
+
+"@awesome-cordova-plugins/open-native-settings@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/open-native-settings/-/open-native-settings-6.4.0.tgz#94f248da375fafe135f26121bcfcdba71440be0c"
+  integrity sha512-/90IuKJ8N7X2hkVhIbSnz8ZnCD2P/0WuPuZPvQpfEQNiCqEl+HvUx6LEYWWPCbVR2nYhJw/qZuyO8M4DOBhXYQ==
+  dependencies:
+    "@types/cordova" latest
+
 "@babel/parser@^7.20.15", "@babel/parser@^7.21.3":
   version "7.22.16"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.22.16.tgz#180aead7f247305cce6551bea2720934e2fa2c95"
   integrity sha512-+gPfKv8UWeKKeJTUxe59+OobVcrYHETCsORl61EmSkmgymguYk/X5bp7GuUIXaFsc6y++v8ZxPsLSSuujqDphA==
+
+"@bassist/utils@^0.11.2":
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/@bassist/utils/-/utils-0.11.2.tgz#cc0ae477a46dffe0f87cfa51d98ba086030e0fb7"
+  integrity sha512-qybnYCrh/7AYrch4r+sjgrMgUlUIXJ1xmJwnx486nOD9ishFDlel7p6n8uitH6cygNW4n+/AJm5nAKRVSq3yng==
+
+"@bassist/utils@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@bassist/utils/-/utils-0.4.0.tgz#58eb247b37afc3c405543884731a134f522fc64b"
+  integrity sha512-aoFTl0jUjm8/tDZodP41wnEkvB+C5O9NFCuYN/ztL6jSUSsuBkXq90/1ifBm1XhV/zySHgLYlU1+tgo3XtQ+nA==
+  dependencies:
+    "@withtypes/mime" "^0.1.2"
+
+"@capacitor/core@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-5.4.1.tgz#5c90f5df3d60e752c5de137de5653751fefe1752"
+  integrity sha512-QG9gORuxw2WNcVpLHT1W3LzACOJvFWRuHcz4b9edzxehSELqiSQ4DoGWLp4PuNBBp2oV/fGA4FMNmfZ1jIAAWg==
+  dependencies:
+    tslib "^2.1.0"
+
+"@capacitor/geolocation@^5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/geolocation/-/geolocation-5.0.6.tgz#05f7d96f4274847c4e09f443cad71a21126a679a"
+  integrity sha512-3pB3CBa38aDMk7zouGbjOMBytcaqRMBosMcqNrOQjE5LMBAPUI1cEGrUzmkj+scP0SIyYGA95Tkj0BAnzvNWag==
 
 "@esbuild/linux-loong64@0.14.54":
   version "0.14.54"
@@ -188,6 +231,11 @@
   resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.16.6.tgz#6b79d3c01785793c10543c93f21653e26539a740"
   integrity sha512-yHvp2Z73LuS29fhjE+dSzUvEKGCuTTy+WGIsAYxbnhBVW2rTYlYmFQfGdOPdzNreHZh+G/1D56n0Q6ClZxJHKg==
 
+"@quasar/quasar-ui-qcalendar@^4.0.0-beta.16":
+  version "4.0.0-beta.16"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qcalendar/-/quasar-ui-qcalendar-4.0.0-beta.16.tgz#90dca0962f1fe1068361f387893df6c5da7522e2"
+  integrity sha512-KVbFJD1HQp91tiklv+6XsG7bq8FKK6mhhnoVzmjgoyhUAEb9csfbDPbpegy1/FzXy3o0wITe6mmRZ8nbaiMEZg==
+
 "@quasar/render-ssr-error@^1.0.1":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@quasar/render-ssr-error/-/render-ssr-error-1.0.2.tgz#92abb0d61cfdfbf51c2ec3cc2e4aadbf1c79f04f"
@@ -242,6 +290,11 @@
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/@types/cordova/-/cordova-0.0.34.tgz#ea7addf74ecec3d7629827a0c39e2c9addc73d04"
   integrity sha512-rkiiTuf/z2wTd4RxFOb+clE7PF4AEJU0hsczbUdkHHBtkUmpWQpEddynNfJYKYtZFJKbq4F+brfekt1kx85IZA==
+
+"@types/cordova@latest":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@types/cordova/-/cordova-11.0.1.tgz#2a30dcf4cd2d308251332ed67ff293bf31d7b8ff"
+  integrity sha512-Zd6LAhYUAdn0mL0SbxHeF4fO/3uzkcW3fzE0ZIK1wDlTRCWlI4/0i+Phb+otP9ryziyeW2LKofRNSP5yil85hA==
 
 "@types/express-serve-static-core@^4.17.33":
   version "4.17.36"
@@ -426,6 +479,28 @@
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.3.4.tgz#06e83c5027f464eef861c329be81454bc8b70780"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
+
+"@web-analytics/core@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@web-analytics/core/-/core-0.1.5.tgz#9a6e7da38f24ef5ebf1a9df33bb097b44aecc0f3"
+  integrity sha512-oJCaAe7zj1X365ZvNQrso9yE+kszPQD2plbP5/J0EjgppZCmHSpkvqtY+T2lArGNcHezzPDjwBEkmYge6d+fIQ==
+  dependencies:
+    "@bassist/utils" "^0.11.2"
+
+"@web-analytics/vue@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@web-analytics/vue/-/vue-0.2.2.tgz#cb676e9e7fe6d0875918ec3abb0cc5d63481ae0f"
+  integrity sha512-becl9OFlEUYD+0x7ats72FVOvMk+kAXHc3tla2makSGOO2UDu69tGMv5WPExuTg9CqSFHd/a5aUGqmFq4sualQ==
+  dependencies:
+    "@bassist/utils" "^0.11.2"
+    "@web-analytics/core" "^0.1.5"
+
+"@withtypes/mime@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@withtypes/mime/-/mime-0.1.2.tgz#956883251b0786f2c898ed76a23594ea6d9939e0"
+  integrity sha512-PB9BfZGzwblUONJY0LiOwsHCA6uV3DIPj/w9ReekdHxPOl0VdUFgI5s4avKycuuq9Gf5Nz2ZPA2O36GAUzlMPA==
+  dependencies:
+    mime "^3.0.0"
 
 accepts@~1.3.5, accepts@~1.3.8:
   version "1.3.8"
@@ -899,6 +974,11 @@ crc32-stream@^4.0.2:
   dependencies:
     crc-32 "^1.2.0"
     readable-stream "^3.4.0"
+
+cropperjs@^1.5.13:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.6.1.tgz#fd132021d93b824b1b0f2c2c3b763419fb792d89"
+  integrity sha512-F4wsi+XkDHCOMrHMYjrTEE4QBOrsHHN5/2VsVAaRq8P7E5z7xQpT75S+f/9WikmBEailas3+yo+6zPIomW+NOA==
 
 cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
@@ -2109,6 +2189,11 @@ mime@1.6.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
 
+mime@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-3.0.0.tgz#b374550dca3a0c18443b0c950a6a58f1931cf7a7"
+  integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
+
 mimic-fn@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
@@ -2565,7 +2650,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^7.5.5:
+rxjs@^7.5.5, rxjs@^7.8.1:
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.1.tgz#6f6f3d99ea8044291efd92e7c7fcf562c4057543"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==
@@ -2914,6 +2999,11 @@ vite@^2.9.13:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vue-countdown@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/vue-countdown/-/vue-countdown-1.0.4.tgz#cb2baa4a99644ba6ebb33a9b688cd4138fcddc11"
+  integrity sha512-2aT5FNOZI7yqDRkFz7GwxIoNVF+pZALtX98d1jPo4bqdrs5pEda9DoOdtS3ZzDVrIY6EEoqUUbT4p/nDxwWgHw==
+
 vue-demi@>=0.14.5:
   version "0.14.6"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.6.tgz#dc706582851dc1cdc17a0054f4fec2eb6df74c92"
@@ -2940,6 +3030,15 @@ vue-i18n@^9.4.1:
     "@intlify/core-base" "9.4.1"
     "@intlify/shared" "9.4.1"
     "@vue/devtools-api" "^6.5.0"
+
+vue-picture-cropper@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/vue-picture-cropper/-/vue-picture-cropper-0.6.2.tgz#1e2f6737869f47c41f6bfd1bca61448ce428a668"
+  integrity sha512-rULhkXdAofzYSn5K7icbOnWxgaN/UrY12DJ6ncIiS85wlfVB9HPZN/gIHoVQ4Kjz70IQonvP603BT7IaAJ+0DQ==
+  dependencies:
+    "@bassist/utils" "^0.4.0"
+    "@web-analytics/vue" "^0.2.2"
+    cropperjs "^1.5.13"
 
 vue-router@^4.2.4:
   version "4.2.4"

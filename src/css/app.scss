@@ -1,3 +1,7 @@
 .init-border {
   border: solid 1px;
 }
+
+.hover-overlay:hover .overlay {
+  display: block !important;
+}

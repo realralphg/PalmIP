@@ -1,20 +1,35 @@
 <template>
   <swiper-container
-    loop="true"
-    css-mode="true"
-    navigation="true"
+    :loop="true"
+    :css-mode="true"
+    :navigation="true"
     :centered-slides="true"
     :autoplay-delay="5000"
     :autoplay-pause-on-mouse-enter="true"
     :autoplay-disable-on-interaction="true"
   >
-    <swiper-slide :key="slide" v-for="slide in 6">
-      <q-img height="500px" :src="`/slides/slide-${slide}.jpg`" />
+    <swiper-slide :key="slide.id" v-for="slide in data">
+      <q-img loading="eager" height="500px" :src="slide.image_url" />
     </swiper-slide>
   </swiper-container>
 </template>
 
-<script setup></script>
+<script setup>
+import { alova, useRequest } from "src/boot/alova";
+
+const { data } = useRequest(
+  alova.Get(`slides`, {
+    localCache: {
+      mode: "placeholder",
+      expire: 3.6e6,
+    },
+    transformData: (data) => data.data,
+  }),
+  {
+    initialData: [],
+  },
+);
+</script>
 
 <style scoped lang="scss">
 swiper-container {

@@ -37,12 +37,12 @@ export const useAuthStore = defineStore("auth", {
     redirectTo (route) {
       this.redirect = route;
     },
-    async logOut (user) {
+    async logOut () {
       return alova
-        .Post("/v2/logout", {}, {
+        .Post("/logout", {}, {
           transformData: data => data,
         }).send()
-        .then((e) => {
+        .then(() => {
           this.roles = [];
           this.permissions = [];
           this.token = null;

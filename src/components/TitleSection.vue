@@ -6,8 +6,9 @@
       </q-item-section>
 
       <q-item-section>
-        <q-item-label>
+        <q-item-label class="flex justify-between">
           <div class="text-h6">{{ title }}</div>
+          <slot name="button"></slot>
         </q-item-label>
         <q-item-label caption class="text-black" v-if="subtitle">
           {{ subtitle }}

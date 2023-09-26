@@ -2,24 +2,15 @@ import { defineStore } from "pinia";
 
 export const useBootstrapStore = defineStore("bootstrap", {
   state: () => ({
-    fruitbay_categories: [],
     configurations: {},
     lost_page: null,
     settings: { referral_bonus: 0, currency_symbol: "₦" },
     website: {},
     booted: null,
     charts: {
-      subscriptions: {},
-      transactions: 0,
-      customers: 0,
-      income: 0,
-      sales: 0,
-      pie: {},
-      bar: {},
     },
-    plans: [],
     cart: [],
-    app: { paymentInitData: null, paymentSuccess: null, storeView: "gridView" },
+    app: { paymentInitData: null, geolocation: {} },
     meta: {
       reboots: null,
     },
@@ -43,9 +34,6 @@ export const useBootstrapStore = defineStore("bootstrap", {
     },
   }),
   getters: {
-    getPlans (state) {
-      return state.plans;
-    },
     getSettings (state) {
       return state.settings;
     },
@@ -74,7 +62,7 @@ export const useBootstrapStore = defineStore("bootstrap", {
   },
 
   actions: {
-    boot ({ settings, plans, configurations, fruitbay_categories }) {
+    boot ({ settings, plans, configurations }) {
       if (settings) {
         this.settings = settings;
       }
@@ -83,9 +71,6 @@ export const useBootstrapStore = defineStore("bootstrap", {
       }
       if (plans) {
         this.plans = plans;
-      }
-      if (fruitbay_categories) {
-        this.fruitbay_categories = fruitbay_categories;
       }
       this.booted = new Date().toString();
       if (this.meta.reboots === null) {
@@ -113,7 +98,7 @@ export const useBootstrapStore = defineStore("bootstrap", {
         }
       }
     },
-    set404 ({ message, msg, previous, current, isset }) {
+    set404 ({ message, msg, current, isset }) {
       this.error404 = {
         message: message || msg || null,
         current: current || null,
