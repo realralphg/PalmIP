@@ -68,7 +68,10 @@
         >
           <template v-slot:body-cell-user_id="props">
             <q-td :props="props">
-              <q-item class="q-pl-none">
+              <q-item
+                class="q-py-none full-height"
+                :to="{ name: 'profile', params: { user: props.row.username } }"
+              >
                 <q-item-section avatar>
                   <q-avatar>
                     <img :src="props.row.avatar" />
@@ -179,18 +182,12 @@ const sales_column = [
     field: "name",
     sortable: false,
     align: "left",
+    classes: "q-pa-none important",
   },
   {
     name: "name",
     label: "Crop",
     field: "product_name",
-    sortable: true,
-    align: "left",
-  },
-  {
-    name: "address",
-    label: "Location",
-    field: (e) => helpers.trunc(e.address, 30),
     sortable: true,
     align: "left",
   },

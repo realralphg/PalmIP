@@ -66,26 +66,6 @@
           v-model:pagination="pagination"
           @request="onRequest"
         >
-          <template v-slot:body-cell-user_id="props">
-            <q-td :props="props">
-              <q-item class="q-pl-none">
-                <q-item-section avatar>
-                  <q-avatar>
-                    <img :src="props.row.avatar" />
-                  </q-avatar>
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label class="text-weight-bold">
-                    {{ props.row.name }}
-                  </q-item-label>
-                  <q-item-label>
-                    {{ helpers.trunc(props.row.address, 30) }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-td>
-          </template>
           <template v-slot:body-cell-name="props">
             <q-td :props="props">
               <q-item class="q-pl-none">
@@ -175,13 +155,6 @@ import ContentRemover from "src/components/Admin/ContentRemover.vue";
 import { useUserStore } from "src/stores/user-store";
 
 const sales_column = [
-  {
-    name: "user_id",
-    label: "Seller",
-    field: "name",
-    sortable: false,
-    align: "left",
-  },
   {
     name: "name",
     label: "Crop",

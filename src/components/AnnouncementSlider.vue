@@ -6,7 +6,7 @@
     :css-mode="true"
     :navigation="true"
     :autoplay-delay="4000"
-    :slides-per-view="3"
+    :slides-per-view="slidesPerView[$q.screen.name] || 3"
     :update-on-window-resize="true"
     :autoplay-pause-on-mouse-enter="true"
     :autoplay-disable-on-interaction="true"
@@ -67,6 +67,10 @@ defineProps({
   },
 });
 
+const slidesPerView = {
+  xs: 1,
+  sm: 2,
+};
 const readDialogToggle = ref(false);
 const announcement = ref({});
 

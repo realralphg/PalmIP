@@ -139,7 +139,8 @@ const sales_column = [
   {
     name: "price",
     label: "Price",
-    field: (e) => helpers.money(e.price || 0),
+    field: (e) =>
+      `${helpers.money(e.price || 0)}/${helpers.singularize(e.unit)}`,
     sortable: true,
     align: "left",
     classes: "text-bold",

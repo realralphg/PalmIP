@@ -16,6 +16,11 @@ export default [
         component: () => import('pages/User/ProfilePage.vue')
       },
       {
+        path: '/profile/:user',
+        name: 'profile',
+        component: () => import('pages/UserProfilePage.vue')
+      },
+      {
         path: 'dashboard',
         name: 'user.dashboard',
         component: () => import('pages/User/DashboardPage.vue')

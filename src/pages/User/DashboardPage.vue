@@ -23,6 +23,7 @@
     <ForecastDialog ref="forecastDialogRef" />
     <DiseaseDialog ref="diseaseDialogRef" />
     <SoilRequirementDialog ref="soilRequirementDialogRef" />
+    <UsersDialog :type="usersType" ref="usersDialogRef" />
   </q-page>
 </template>
 
@@ -38,7 +39,10 @@ import { useUserStore } from "stores/user-store";
 import DiseaseDialog from "src/components/DiseaseDialog.vue";
 import helpers from "src/plugins/helpers";
 import SoilRequirementDialog from "src/components/SoilRequirementDialog.vue";
+import UsersDialog from "src/components/UsersDialog.vue";
 
+const usersType = ref("farmer");
+const usersDialogRef = ref();
 const forecastDialogRef = ref();
 const diseaseDialogRef = ref();
 const soilRequirementDialogRef = ref();
@@ -112,42 +116,53 @@ const { data: locationUsers, send: getOverviewLocations } = useRequest(
   },
 );
 
+const loadUsers = (type = "farmer") => {
+  usersType.value = type;
+  usersDialogRef.value.toggle();
+};
+
 const stats = computed(() => [
   {
     icon: "people",
     color: "blue",
     label: "Farmers",
     count: dashboard.value.stats.farmers || 0,
+    click: () => loadUsers("farmer"),
   },
   {
     icon: "precision_manufacturing",
     color: "green",
     label: "Processsors",
     count: dashboard.value.stats.processsors || 0,
+    click: () => loadUsers("processsor"),
   },
   {
     icon: "storefront",
     color: "orange",
     label: "Marketers",
     count: dashboard.value.stats.marketers || 0,
+    click: () => loadUsers("marketer"),
   },
   {
     icon: "agriculture",
     color: "teal",
     label: "Transporters",
     count: dashboard.value.stats.transporters || 0,
+    click: () => loadUsers("transporter"),
   },
   {
     icon: "flight_takeoff",
     color: "amber",
     label: "Offtakers",
     count: dashboard.value.stats.offtakers || 0,
+    click: () => loadUsers("offtaker"),
   },
   {
     icon: "biotech",
     color: "purple",
     label: "Researchers",
     count: dashboard.value.stats.researchers || 0,
+    click: () => loadUsers("researcher"),
   },
   {
     sup: "° Celsius",
