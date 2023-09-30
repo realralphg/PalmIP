@@ -1,6 +1,6 @@
 <template>
   <div :style="{ height, width }">
-    <div id="map" v-if="loaded"></div>
+    <div class="map" :id="`map-${cuid}`" v-if="loaded"></div>
     <div v-else class="full-height column justify-center items-center">
       <div
         class="tf-sm-h-280 tf-sm-w-280 tf-h-500 tf-w-500 bg-red-1 tf-rounded-full column justify-center items-center q-gutter-md"
@@ -25,7 +25,7 @@
 
 <script>
 import L from "leaflet";
-import { nextTick, ref } from "vue";
+import { getCurrentInstance, nextTick, ref } from "vue";
 
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
@@ -65,13 +65,15 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const cuid = getCurrentInstance().uid;
+
     const position = ref(props.modelValue);
 
     if (!props.modelValue) {
       return { position, loaded: false };
     }
     nextTick(() => {
-      const map = L.map("map")
+      const map = L.map(`map-${cuid}`)
         .setMaxZoom(props.maxZoom)
         .setView([position.value.lat, position.value.lng], props.zoom);
       L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
@@ -129,15 +131,16 @@ export default {
     });
 
     return {
-      position,
+      cuid,
       loaded: true,
+      position,
     };
   },
 };
 </script>
 <style scoped>
 @import "leaflet/dist/leaflet.css";
-#map {
+.map {
   height: 100%;
 }
 .slot {

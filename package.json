@@ -21,6 +21,7 @@
     "@capacitor/geolocation": "^5.0.6",
     "@quasar/extras": "^1.16.6",
     "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.16",
+    "@quasar/quasar-ui-qiconpicker": "^2.0.7",
     "alova": "^2.11.1",
     "axios": "^1.5.0",
     "leaflet": "^1.9.4",

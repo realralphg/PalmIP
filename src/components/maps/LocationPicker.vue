@@ -119,7 +119,7 @@
             unelevated
             color="primary"
             label="Accept"
-            @click="showMapLayers = false"
+            @click="(showMapLayers = false), emit('accept:location', location)"
           />
         </div>
         <q-inner-loading :showing="loading">
@@ -187,7 +187,11 @@ import { useQuasar } from "quasar";
 import { useUserStore } from "src/stores/user-store";
 import { alova, useRequest } from "src/boot/alova";
 
-const emit = defineEmits(["update:modelValue", "update:location"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "update:location",
+  "accept:location",
+]);
 const props = defineProps({
   modelValue: {
     type: String,
@@ -431,6 +435,7 @@ const updateLocation = (val) => {
   boot.app.geolocation = val;
   emit("update:modelValue", null);
   emit("update:location", val);
+  emit("accept:location", val);
 };
 
 const getCurrentPosition = () => {
@@ -461,6 +466,7 @@ const getCurrentPosition = () => {
       }
 
       emit("update:location", location.value);
+      emit("accept:location", location.value);
     },
   ).catch((err) => {
     findingLocation.value = false;

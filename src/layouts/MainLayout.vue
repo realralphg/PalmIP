@@ -216,6 +216,11 @@ const navLinks = computed(() => {
         icon: "groups",
         text: "Manage Users",
       },
+      {
+        to: { name: "user.dashboard" },
+        icon: "web",
+        text: "User Dashboard",
+      },
     ],
   };
   return (links[route.meta.prefix] || links.user).filter((e) => !e.hide);

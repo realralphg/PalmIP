@@ -18,6 +18,7 @@
   >
     <q-card
       flat
+      :style="cardStyles"
       :class="[
         'tf-important overflow-hidden',
         { [`tf-rounded${edges}-4`]: !square },
@@ -30,9 +31,10 @@
         </q-avatar>
 
         <q-toolbar-title>
-          <span class="text-weight-bold">{{ title }}</span>
+          <slot name="title">
+            <span class="text-weight-bold">{{ title }}</span>
+          </slot>
         </q-toolbar-title>
-
         <q-btn flat round dense icon="close" v-close-popup v-if="closable" />
       </q-toolbar>
 
@@ -46,6 +48,7 @@
       >
         <slot></slot>
       </q-card-section>
+      <slot name="bottom"></slot>
 
       <q-separator v-if="$slots.actions && !hideFooter" />
 
@@ -171,6 +174,13 @@ const props = defineProps({
   alignActions: {
     type: String,
     default: "right",
+  },
+  /**
+   * @description Styles to be applied to the main card
+   * @type {String}
+   */
+  cardStyles: {
+    type: String,
   },
 });
 

@@ -174,6 +174,7 @@
         <q-checkbox
           v-model="form.approved"
           label="Approved"
+          icon-set="material-icons"
           :true-value="1"
           :false-value="0"
           v-if="!user"
@@ -260,10 +261,10 @@ const localeData = (options, type) => {
 const onPickLocation = (data) => {
   form.value.location = [data.lat, data.lng].join(",");
   form.value.address = data.value;
-  form.value.country = data.address.country || form.value.country;
-  form.value.state = data.address.state || form.value.state;
+  form.value.country = data.address?.country || form.value?.country;
+  form.value.state = data.address?.state || form.value?.state;
   form.value.city =
-    data.address.city || data.address.village || form.value.city;
+    data.address?.city || data.address?.village || form.value.city;
 };
 
 const {
@@ -356,3 +357,5 @@ watch(item, (i) => {
 });
 defineExpose({ open });
 </script>
+
+<style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
