@@ -1,4 +1,4 @@
-# Palm IP (palm-ip)
+# Ginger IP (palm-ip)
 
 Palm Valley Nigeria Limited Agricultural Innovation Platfrom for Rice and Maize Produce.
 
