@@ -77,7 +77,7 @@
                       :key="item.id"
                       v-for="item in marketItems"
                       v-intersection="
-                        (e) => onIntersectMarket(e, i === users.length - 1, i)
+                        (e) => onIntersectMarket(e, i === marketItems.length - 1, i)
                       "
                     >
                       <q-item-section avatar>
