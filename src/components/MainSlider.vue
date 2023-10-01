@@ -26,6 +26,7 @@
             size="xl"
             color="primary"
             class="q-ma-sm"
+            style="opacity: 0.5"
             v-if="!slide.loaded"
           />
           <h3
