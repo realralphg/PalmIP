@@ -9,13 +9,50 @@
     :autoplay-disable-on-interaction="true"
   >
     <swiper-slide :key="slide.id" v-for="slide in data">
-      <q-img loading="eager" height="500px" :src="slide.image_url" />
+      <div
+        class="relative full-width q-pa-md"
+        :style="{
+          height: '400px',
+          backgroundSize: 'cover',
+          backgroundImage: `url(${slide.image_url})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+        }"
+      >
+        <div
+          class="absolute-top-left full-width column justify-center items-center q-px-md full-height"
+        >
+          <q-spinner
+            size="xl"
+            color="primary"
+            class="q-ma-sm"
+            v-if="!slide.loaded"
+          />
+          <h3
+            class="text-h3 text-weight-bold text-left text-grey-4 q-my-xs"
+            v-html="helpers.nlText(slide.title, 5)"
+          ></h3>
+          <h4 class="text-h4 text-weight-bold text-left text-white q-my-xs">
+            {{ slide.line1 }}
+          </h4>
+          <h6 class="text-h6 text-white text-weight-bold text-left q-my-xs">
+            {{ slide.line2 }}
+          </h6>
+          <img
+            :src="slide.image_url"
+            style="height: 0px; width: 0px"
+            v-if="!slide.loaded"
+            @load="slide.loaded = true"
+          />
+        </div>
+      </div>
     </swiper-slide>
   </swiper-container>
 </template>
 
 <script setup>
 import { alova, useRequest } from "src/boot/alova";
+import helpers from "src/plugins/helpers";
 
 const { data } = useRequest(
   alova.Get(`slides`, {
