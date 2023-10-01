@@ -29,13 +29,13 @@
             v-if="!slide.loaded"
           />
           <h3
-            class="text-h3 text-weight-bold text-left text-grey-4 q-my-xs"
+            class="text-h3 text-weight-bold text-center text-grey-4 q-my-xs"
             v-html="helpers.nlText(slide.title, 5)"
           ></h3>
-          <h4 class="text-h4 text-weight-bold text-left text-white q-my-xs">
+          <h4 class="text-h4 text-weight-bold text-center text-white q-my-xs">
             {{ slide.line1 }}
           </h4>
-          <h6 class="text-h6 text-white text-weight-bold text-left q-my-xs">
+          <h6 class="text-h6 text-white text-weight-bold text-center q-my-xs">
             {{ slide.line2 }}
           </h6>
           <img
