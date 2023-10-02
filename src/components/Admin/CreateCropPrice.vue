@@ -108,7 +108,7 @@ import QIconPicker from "src/components/QIconPicker";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
 import { useBootstrapStore } from "src/stores/bootstrap";
-import "@quasar/quasar-ui-qiconpicker/src/index.sass";
+// import "@quasar/quasar-ui-qiconpicker/src/index.sass";
 
 const emit = defineEmits(["update:modelValue", "update:item", "created"]);
 const props = defineProps({

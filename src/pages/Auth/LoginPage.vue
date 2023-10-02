@@ -27,7 +27,7 @@
   <q-page class="flex bg-image flex-center">
     <q-card
       class="shadow-15"
-      v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }"
+      v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '40%' }"
     >
       <q-card-section>
         <q-avatar size="83px" class="absolute-center">

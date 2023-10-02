@@ -78,13 +78,13 @@ a {
 }
 
 @media (max-width: 1100px) {
-  .q-drawer {
-    max-width: 240px !important;
-  }
+  // .q-drawer {
+  //   max-width: 240px !important;
+  // }
 
-  .q-page-container {
-    padding-left: 240px !important;
-  }
+  // .q-page-container {
+  //   padding-left: 240px !important;
+  // }
   .dash_swiper {
     .q-card {
       min-height: 300px;
@@ -111,5 +111,33 @@ a {
         font-size: 13px;
       }
     }
+  }
+}
+@media (max-width: 1000px) {
+  .bg-image {
+    .q-card {
+      width: 70% !important;
+    }
+  }
+}
+@media (max-width: 500px) {
+  .map_row {
+    div.col-md-6 {
+      width: 100%;
+    }
+  }
+  .q-page {
+    padding: 1.5rem 0.5rem;
+  }
+  .bg-image {
+    .q-card {
+      width: 95% !important;
+    }
+  }
+
+  .text-h6 {
+    font-size: 1rem;
+    line-height: 1rem;
+    margin-bottom: 0.4rem;
   }
 }

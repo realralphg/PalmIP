@@ -24,7 +24,7 @@
             <q-item-section
               v-if="icon_position === 'left'"
               side
-              class="q-pa-lg q-mr-none text-white"
+              class="q-pa-md q-mr-none text-white"
               :class="`bg-${item.color}-10`"
             >
               <q-icon :name="item.icon" color="white" size="lg"></q-icon>
@@ -44,8 +44,8 @@
               <q-icon :name="item.icon" color="white" size="lg"></q-icon>
             </q-item-section>
             <q-item-section
-              style="max-width: 30px"
-              class="q-px-none q-mx-none text-white"
+              style="max-width: 50px"
+              class="q-px-md q-mx-none text-white"
               :class="`bg-${item.color}-10`"
               v-if="item.click || item.to"
             >

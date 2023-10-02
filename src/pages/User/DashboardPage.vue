@@ -2,7 +2,7 @@
   <q-page>
     <div class="q-pa-md">
       <StatsCards :items="stats" />
-      <div class="row q-col-gutter-md q-my-sm justify-center">
+      <div class="row map_row q-col-gutter-md q-my-sm justify-center">
         <div class="col-12 col-sm-6">
           <MainSlider />
         </div>
