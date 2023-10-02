@@ -1,5 +1,6 @@
 <template>
   <q-btn
+    size="10px"
     color="negative"
     icon="delete"
     :loading="loading"

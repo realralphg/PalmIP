@@ -8,7 +8,6 @@
       >
         <template #button>
           <q-btn
-            rounded
             label="Create New"
             color="primary"
             @click="$refs.createDiseaseOutbreakRef.open()"
@@ -56,7 +55,6 @@
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-left">
               <q-btn
-                rounded
                 color="primary"
                 label="Edit"
                 @click="$refs.createDiseaseOutbreakRef.open(props.row)"

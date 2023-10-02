@@ -22,7 +22,6 @@
                   <q-btn
                     dense
                     flat
-                    rounded
                     size="xs"
                     icon="clear"
                     v-if="search"
@@ -33,7 +32,6 @@
                 <template v-slot:after>
                   <q-btn
                     flat
-                    rounded
                     class="fix"
                     padding="13px"
                     color="primary"
@@ -89,15 +87,13 @@
           </template>
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-left">
-              <div class="full-width flex justify-end">
+              <div class="full-width flex no-wrap justify-end">
                 <q-btn
-                  rounded
                   color="primary"
                   label="Edit"
                   @click="$refs.createUserRef.open(props.row)"
                 />
                 <ContentRemover
-                  round
                   class="q-ml-sm"
                   base-url="admin/users"
                   confirmation="Are you sure you want to delete this user?"

@@ -4,7 +4,6 @@
       <TitleSection separator title="Market Place Management">
         <template #button>
           <q-btn
-            rounded
             label="Create New"
             color="primary"
             @click="$refs.createMarketItemRef.open()"

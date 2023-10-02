@@ -4,7 +4,6 @@
       <TitleSection separator icon="event" title="Events Management">
         <template #button>
           <q-btn
-            rounded
             label="Create New"
             color="primary"
             @click="$refs.createEventRef.open()"
@@ -79,7 +78,6 @@
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-left">
               <q-btn
-                rounded
                 color="primary"
                 label="Edit"
                 @click="$refs.createEventRef.open(props.row)"

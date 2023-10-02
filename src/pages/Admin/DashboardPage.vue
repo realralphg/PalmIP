@@ -3,10 +3,10 @@
     <div class="q-pa-md">
       <StatsCards :items="stats" />
       <div class="row q-col-gutter-md q-my-sm justify-center">
-        <div class="col-12 col-sm-6">
+        <div class="col-lg-6 col-md-6 col-sm-12">
           <MainSlider />
         </div>
-        <div class="col-12 col-sm-6">
+        <div class="col-lg-6 col-md-6 col-sm-12">
           <MapComponent
             :user="user"
             :users="locationUsers"
@@ -17,10 +17,12 @@
       </div>
     </div>
     <div class="q-pa-md bg-white q-mt-md">
-      <h5 class="text-center text-weight-bold q-my-xs">
+      <h5
+        class="text-center column justify-center items-center text-weight-bold q-my-xs"
+      >
         Announcements
         <q-btn
-          rounded
+          class="q-mt-sm"
           label="Create New"
           color="primary"
           @click="$refs.createAnnouncementRef.open()"

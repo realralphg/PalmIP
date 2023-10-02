@@ -1,9 +1,9 @@
 <template>
   <q-card flat class="bg-transparent">
     <q-card-section class="q-pa-none">
-      <div class="row q-col-gutter-sm justify-start">
+      <div class="grid">
         <div
-          class="col-md-3 col-sm-12 col-xs-12"
+          class="each_card"
           :key="i"
           v-for="(item, i) in items"
           @click="onClick(item)"
@@ -11,7 +11,7 @@
           <q-item
             class="q-pa-none"
             :class="[
-              `bg-${item.color}-4`,
+              `bg-${item.color}-8`,
               { 'cursor-pointer hover-overlay': !!item.click },
             ]"
           >
@@ -25,7 +25,7 @@
               v-if="icon_position === 'left'"
               side
               class="q-pa-lg q-mr-none text-white"
-              :class="`bg-${item.color}`"
+              :class="`bg-${item.color}-10`"
             >
               <q-icon :name="item.icon" color="white" size="lg"></q-icon>
               <q-tooltip v-if="item.tooltip">{{ item.tooltip }}</q-tooltip>
@@ -46,7 +46,7 @@
             <q-item-section
               style="max-width: 30px"
               class="q-px-none q-mx-none text-white"
-              :class="`bg-${item.color}-4`"
+              :class="`bg-${item.color}-10`"
               v-if="item.click || item.to"
             >
               <q-icon
@@ -101,6 +101,11 @@ const onClick = (item) => {
 </script>
 
 <style scoped lang="scss">
+.each_card {
+  .q-item {
+    height: 120px;
+  }
+}
 .has-badge {
   z-index: 1;
   &:not(.danger) {
@@ -127,6 +132,15 @@ const onClick = (item) => {
 @keyframes blink {
   to {
     visibility: hidden;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  .text-h6 {
+    font-size: 1rem;
   }
 }
 </style>

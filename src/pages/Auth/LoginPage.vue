@@ -1,16 +1,41 @@
 <template>
+  <q-header elevated class="bg-white q-pa-sm">
+    <router-link
+      to="/"
+      flat
+      no-caps
+      no-wrap
+      class="q-ml-xs row items-center logo"
+    >
+      <div
+        style="
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+          border-radius: 50%;
+        "
+        class="bg-green q-mr-sm row items-center justify-center"
+      >
+        <img
+          style="width: 40px; height: 40px; object-fit: contain"
+          src="~/assets/palm_logo.png"
+        />
+      </div>
+      <h1 class="logo">Palmvalley <span>NG</span></h1>
+    </router-link>
+  </q-header>
   <q-page class="flex bg-image flex-center">
     <q-card
       class="shadow-15"
       v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }"
     >
       <q-card-section>
-        <q-avatar size="103px" class="absolute-center shadow-10">
-          <img src="~/assets/avatar.jpg" />
+        <q-avatar size="83px" class="absolute-center">
+          <img src="~/assets/user.png" />
         </q-avatar>
       </q-card-section>
       <q-card-section>
-        <div class="text-center q-pt-lg">
+        <div class="text-center q-pt-xl">
           <div class="col text-h6 ellipsis">Log in to your dashboard</div>
         </div>
       </q-card-section>
@@ -51,9 +76,8 @@
             </template>
           </q-input>
 
-          <div class="flex justify-center">
+          <div class="flex q-mt-xl justify-center">
             <q-btn
-              rounded
               size="lg"
               label="Login"
               type="submit"
@@ -62,7 +86,7 @@
               :loading="loading"
             />
           </div>
-          <p class="text-dark q-mt-md q-pb-sm text-center">
+          <p class="text-dark q-mt-md text-center">
             Don’t have an account?
             <RouterLink class="text-primary" :to="{ name: 'register' }">
               Register
@@ -143,6 +167,6 @@ onError(() => {
 
 <style>
 .bg-image {
-  background-image: linear-gradient(135deg, #7028e4 0%, #e5b2ca 100%);
+  background-image: linear-gradient(135deg, white 0%, #f4f4f4 100%);
 }
 </style>

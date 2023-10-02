@@ -26,7 +26,7 @@
       <q-video v-if="video" :src="prev || prevDefault" spinner-color="white" />
       <q-img v-else :src="prev || prevDefault" spinner-color="white" />
     </div>
-    <small class="text-blue" v-if="showLimit">
+    <small class="text-green" v-if="showLimit">
       {{ helpers.formatBytes(maxFileSize) }} max file size allowed.
     </small>
     <div class="q-py-xs" v-if="progress > 0">

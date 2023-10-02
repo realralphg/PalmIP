@@ -8,7 +8,6 @@
       >
         <template #button>
           <q-btn
-            rounded
             label="Create New"
             color="primary"
             @click="$refs.createCropRef.open()"
@@ -35,7 +34,6 @@
                   <q-btn
                     dense
                     flat
-                    rounded
                     size="xs"
                     icon="clear"
                     v-if="search"
@@ -46,7 +44,6 @@
                 <template v-slot:after>
                   <q-btn
                     flat
-                    rounded
                     class="fix"
                     padding="13px"
                     color="primary"
@@ -73,13 +70,12 @@
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-left">
               <q-btn
-                rounded
+                size="12px"
                 color="primary"
                 label="Edit"
                 @click="$refs.createCropRef.open(props.row)"
               />
               <ContentRemover
-                round
                 class="q-ml-sm"
                 base-url="admin/prices"
                 :id="props.value"

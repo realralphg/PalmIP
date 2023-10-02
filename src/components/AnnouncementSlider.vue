@@ -1,5 +1,6 @@
 <template>
   <swiper-container
+    class="dash_swiper"
     v-bind="$attrs"
     :loop="true"
     :observer="true"
@@ -17,13 +18,12 @@
           <div class="text-h6 text-grey-8">{{ slide.title }}</div>
         </q-card-section>
         <q-separator />
-        <q-card-section>
+        <q-card-section class="card_section">
           {{ slide.preview }}
         </q-card-section>
-        <q-card-actions align="right">
-          <q-btn rounded label="Details" color="green" @click="open(slide)" />
+        <q-card-actions class="card_actions" align="right">
+          <q-btn label="Details" color="green" @click="open(slide)" />
           <q-btn
-            rounded
             icon="edit"
             label="Edit"
             color="info"
@@ -31,7 +31,6 @@
             @click="emit('edit', slide)"
           />
           <ContentRemover
-            rounded
             base-url="admin/announcements"
             v-if="editable"
             :id="slide.id"

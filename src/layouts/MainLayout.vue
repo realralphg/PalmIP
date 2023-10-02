@@ -15,10 +15,28 @@
         <q-toolbar-title
           v-if="$q.screen.gt.xs"
           shrink
-          class="row items-center no-wrap"
+          class="row q-mr-lg q-pr-md items-center no-wrap"
         >
-          <RouterLink :to="{ name: 'home' }">
-            <img src="~/assets/logo-vertical.svg" />
+          <RouterLink
+            style="gap: 0.5rem"
+            class="row items-center no-wrap"
+            :to="{ name: 'home' }"
+          >
+            <div
+              style="
+                width: 50px;
+                height: 50px;
+                object-fit: contain;
+                border-radius: 50%;
+              "
+              class="bg-green row items-center justify-center"
+            >
+              <img
+                style="width: 40px; height: 40px; object-fit: contain"
+                src="~/assets/palm_logo.png"
+              />
+            </div>
+            <h1 class="logo">Palmvalley <span>NG</span></h1>
           </RouterLink>
         </q-toolbar-title>
 
@@ -29,7 +47,7 @@
           outlined
           dense
           v-model="search"
-          color="bg-grey-7 shadow-1"
+          color="bg-grey-7"
           placeholder="Search for topics, locations & sources"
         >
           <template v-slot:prepend>
@@ -81,7 +99,9 @@
       v-model="leftDrawerOpen"
     >
       <q-scroll-area class="fit">
-        <div class="column justify-between absolute full-height full-width">
+        <div
+          class="column q-pt-lg justify-between absolute full-height full-width"
+        >
           <q-list padding class="text-grey-8">
             <q-item
               v-ripple
@@ -94,7 +114,7 @@
               v-for="link in navLinks"
             >
               <q-item-section avatar>
-                <q-icon :name="link.icon" />
+                <q-icon color="primary" :name="link.icon" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ link.text }}</q-item-label>

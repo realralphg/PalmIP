@@ -2,7 +2,7 @@
   <q-card-section v-bind="$attrs" class="text-h6 q-pb-none">
     <q-item>
       <q-item-section avatar class="">
-        <q-icon color="blue" :name="icon" size="44px" />
+        <q-icon color="green" :name="icon" size="44px" />
       </q-item-section>
 
       <q-item-section>

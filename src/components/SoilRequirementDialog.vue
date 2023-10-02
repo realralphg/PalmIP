@@ -1,10 +1,21 @@
 <template>
   <q-dialog v-model="opened" @show="send">
     <q-card style="min-width: 500px">
-      <q-toolbar>
-        <q-avatar>
-          <img src="~/assets/logo-vertical.svg" />
-        </q-avatar>
+      <q-toolbar class="q-pa-sm">
+        <div
+          style="
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 50%;
+          "
+          class="bg-green q-mr-sm row items-center justify-center"
+        >
+          <img
+            style="width: 40px; height: 40px; object-fit: contain"
+            src="~/assets/palm_logo.png"
+          />
+        </div>
 
         <q-toolbar-title>
           <span class="text-weight-bold">Soil</span>
