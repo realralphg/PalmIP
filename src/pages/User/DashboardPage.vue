@@ -196,7 +196,7 @@ const stats = computed(() => [
   ...(dashboard.value.stats.current_prices || []).map((e) => {
     return {
       sup: ` ${e.unit}`,
-      icon: "fa-solid fa-wheat-awn",
+      icon: e.icon || "fa-solid fa-wheat-awn",
       color: "blue-grey",
       label: `${e.item} (${helpers.money(e.price || 0)}/${helpers.singularize(
         e.unit,

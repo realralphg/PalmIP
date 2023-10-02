@@ -1,13 +1,13 @@
 <template>
   <q-card flat bordered class="map-box map-component">
     <q-card-section>
-      <div id="map"></div>
+      <div class="map" :id="`map-${cuid}`"></div>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect } from "vue";
+import { getCurrentInstance, onMounted, ref, watchEffect } from "vue";
 import L from "leaflet";
 import OWM from "src/plugins/owm";
 import "src/plugins/owm.css";
@@ -16,6 +16,7 @@ import { debounce } from "quasar";
 import markerIcon from "src/assets/map-marker.png";
 import qSpinnerIcon from "src/assets/q-spinner.js";
 
+const cuid = getCurrentInstance().uid;
 const emit = defineEmits(["adjusted"]);
 const props = defineProps({
   location: {
@@ -37,7 +38,7 @@ const OWM_API_KEY = process.env.OWM_API_KEY;
 const uniqueUserIds = ref(new Set());
 
 onMounted(() => {
-  const map = L.map("map", {
+  const map = L.map(`map-${cuid}`, {
     // zoomControl: false,
     // attributionControl: false,
     // doubleClickZoom: false,
@@ -176,7 +177,7 @@ onMounted(() => {
 <style lang="scss">
 @import "leaflet/dist/leaflet.css";
 .map-box.map-component {
-  #map {
+  .map {
     z-index: 1;
     height: 480px;
   }

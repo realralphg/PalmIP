@@ -231,6 +231,11 @@
   resolved "https://registry.npmjs.org/@quasar/quasar-ui-qcalendar/-/quasar-ui-qcalendar-4.0.0-beta.16.tgz"
   integrity sha512-KVbFJD1HQp91tiklv+6XsG7bq8FKK6mhhnoVzmjgoyhUAEb9csfbDPbpegy1/FzXy3o0wITe6mmRZ8nbaiMEZg==
 
+"@quasar/quasar-ui-qiconpicker@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qiconpicker/-/quasar-ui-qiconpicker-2.0.7.tgz#f0d884eda7154f9a3c3a68586b27b41fe5ff90c9"
+  integrity sha512-i4mfuO4uW5DVZ378T7ZW6egbbemQ7h284Rxyi81crIgRe+HzrwFDriQbhNrsSfm5jFGTsmIEcHDEVJks/2Whxw==
+
 "@quasar/render-ssr-error@^1.0.1":
   version "1.0.2"
   resolved "https://registry.npmjs.org/@quasar/render-ssr-error/-/render-ssr-error-1.0.2.tgz"

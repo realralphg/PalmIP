@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-card class="q-mt-sm no-shadow" bordered>
-      <TitleSection separator title="Market Place" />
+      <TitleSection separator title="Crop Price" />
 
       <q-card-section>
         <q-list class="rounded-here text-grey-5 bg-white">

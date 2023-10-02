@@ -4,7 +4,11 @@
     @before-hide="reset"
     v-model="toggle"
   >
-    <q-form class="q-col-gutter-md row" @submit="1" style="min-width: 400px">
+    <q-form
+      class="q-col-gutter-md row"
+      :style="$q.screen.gt.xs ? 'min-width: 400px' : undefined"
+      @submit="1"
+    >
       <div class="col-12">
         <q-input
           filled
@@ -56,6 +60,34 @@
           :error-message="errors.price"
         />
       </div>
+      <div class="col-12">
+        <q-input
+          filled
+          readonly
+          lazy-rules
+          hide-bottom-space
+          type="text"
+          v-model="form.icon"
+          label="Icon"
+          :error="!!errors.icon"
+          :error-message="errors.icon"
+        >
+          <template #prepend>
+            <q-icon color="primary" :name="form.icon" />
+          </template>
+          <q-popup-proxy v-model="iconData.showIconPicker">
+            <QIconPicker
+              tooltips
+              text-color="primary"
+              color="blue-1"
+              icon-set="fontawesome-v5"
+              :class="['pop-up', $q.screen.name]"
+              v-model="form.icon"
+              v-model:model-pagination="iconData.pagination"
+            />
+          </q-popup-proxy>
+        </q-input>
+      </div>
     </q-form>
     <template #actions>
       <q-btn
@@ -72,9 +104,11 @@
 import { alova } from "src/boot/alova";
 import { useForm } from "@alova/scene-vue";
 import { computed, ref, watch, watchEffect } from "vue";
+import QIconPicker from "src/components/QIconPicker";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
 import { useBootstrapStore } from "src/stores/bootstrap";
+import "@quasar/quasar-ui-qiconpicker/src/index.sass";
 
 const emit = defineEmits(["update:modelValue", "update:item", "created"]);
 const props = defineProps({
@@ -85,6 +119,7 @@ const props = defineProps({
     type: Object,
     default: () => ({
       item: "",
+      icon: "info",
       unit: "Bags",
       price: 0,
       available_qty: 0,
@@ -102,6 +137,14 @@ const open = (i) => {
   toggle.value = true;
 };
 
+const iconData = ref({
+  showIconPicker: false,
+  pagination: {
+    itemsPerPage: 60,
+    page: 0,
+  },
+});
+
 const {
   form,
   error,
@@ -118,6 +161,7 @@ const {
   {
     initialForm: {
       item: price.value.item,
+      icon: price.value.icon || "info",
       unit: price.value.unit,
       price: price.value.price,
       available_qty: price.value.available_qty,
@@ -146,6 +190,7 @@ watchEffect(() => {
 watch(price, (i) => {
   form.value = {
     item: i.item,
+    icon: i.icon || "info",
     unit: i.unit,
     price: i.price,
     available_qty: i.available_qty,
@@ -153,3 +198,14 @@ watch(price, (i) => {
 });
 defineExpose({ open });
 </script>
+
+<style scoped lang="scss">
+.pop-up {
+  height: 300px;
+  min-width: 500px;
+  &.sm,
+  &.xs {
+    min-width: 200px;
+  }
+}
+</style>

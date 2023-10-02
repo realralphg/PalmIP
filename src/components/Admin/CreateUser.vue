@@ -351,10 +351,10 @@ const onPickLocation = (data) => {
   form.value.latitude = data.lat;
   form.value.longitude = data.lng;
   form.value.address = data.value;
-  form.value.country = data.address.country || form.value.country;
-  form.value.state = data.address.state || form.value.state;
+  form.value.country = data.address?.country || form.value.country;
+  form.value.state = data.address?.state || form.value.state;
   form.value.city =
-    data.address.city || data.address.village || form.value.city;
+    data.address?.city || data.address?.village || form.value.city;
 };
 
 const open = (i) => {
