@@ -46,7 +46,7 @@
             <q-item-section
               style="max-width: 50px"
               class="q-px-md q-mx-none text-white"
-              :class="`bg-${item.color}-10`"
+              :class="`bg-${item.color}-8`"
               v-if="item.click || item.to"
             >
               <q-icon

@@ -30,8 +30,21 @@
       v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '40%' }"
     >
       <q-card-section>
-        <q-avatar size="83px" class="absolute-center">
-          <img src="~/assets/user.png" />
+        <q-avatar size="103px" class="absolute-center">
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              object-fit: contain;
+              border-radius: 50%;
+            "
+            class="bg-green q-mr-sm row items-center justify-center"
+          >
+            <img
+              style="width: 70px; height: 70px; object-fit: contain"
+              src="~/assets/palm_logo.png"
+            />
+          </div>
         </q-avatar>
       </q-card-section>
       <q-card-section>
