@@ -37,7 +37,6 @@
     <ForecastDialog ref="forecastDialogRef" />
     <DiseaseDialog ref="diseaseDialogRef" />
     <SoilRequirementDialog ref="soilRequirementDialogRef" />
-    <!-- ======= -->
     <CreateAnnouncement ref="createAnnouncementRef" />
   </q-page>
 </template>
