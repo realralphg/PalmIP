@@ -1,29 +1,4 @@
 <template>
-  <q-header elevated class="bg-white q-pa-sm">
-    <router-link
-      to="/"
-      flat
-      no-caps
-      no-wrap
-      class="q-ml-xs row items-center logo"
-    >
-      <div
-        style="
-          width: 50px;
-          height: 50px;
-          object-fit: contain;
-          border-radius: 50%;
-        "
-        class="bg-green q-mr-sm row items-center justify-center"
-      >
-        <img
-          style="width: 40px; height: 40px; object-fit: contain"
-          src="~/assets/palm_logo.png"
-        />
-      </div>
-      <h1 class="logo">Palmvalley <span>NG</span></h1>
-    </router-link>
-  </q-header>
   <q-page class="flex bg-image flex-center">
     <q-card
       class="shadow-15"

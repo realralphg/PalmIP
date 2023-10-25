@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-card class="q-mt-sm no-shadow" bordered>
-      <TitleSection separator title="Market Place">
+      <TitleSection separator title="Marketplace">
         <template #button>
           <q-btn
             rounded

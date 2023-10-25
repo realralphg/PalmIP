@@ -181,7 +181,7 @@ const navLinks = computed(() => {
   const links = {
     user: [
       { to: { name: "user.dashboard" }, icon: "web", text: "Dashboard" },
-      { to: { name: "market" }, icon: "store", text: "Market Place" },
+      { to: { name: "market" }, icon: "store", text: "Marketplace" },
       {
         to: { name: "events.calendar" },
         icon: "event",
@@ -205,7 +205,7 @@ const navLinks = computed(() => {
         icon: "dashboard",
         text: "Dashboard",
       },
-      { to: { name: "admin.market" }, icon: "store", text: "Market Place" },
+      { to: { name: "admin.market" }, icon: "store", text: "Marketplace" },
       {
         to: { name: "admin.crop.price" },
         icon: "fa-solid fa-wheat-awn",

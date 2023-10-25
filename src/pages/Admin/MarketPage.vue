@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-card class="q-mt-sm no-shadow" bordered>
-      <TitleSection separator icon="store" title="Market Place Management">
+      <TitleSection separator icon="store" title="Marketplace Management">
         <template #button>
           <q-btn
             label="Create New"
