@@ -119,7 +119,7 @@
                 {{
                   search
                     ? `No results found for search: "${search}".`
-                    : "You have not created any market place items."
+                    : "You have not created any marketplace items."
                 }}
               </span>
             </div>
