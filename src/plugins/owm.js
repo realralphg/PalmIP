@@ -19,7 +19,7 @@ L.OWM = L.TileLayer.extend({
 
   initialize: function (options) {
     L.Util.setOptions(this, options);
-    var tileurl = this.options.baseUrl.replace('{layername}', this._owmLayerName);
+    let tileurl = this.options.baseUrl.replace('{layername}', this._owmLayerName);
     tileurl = tileurl + '?appid=' + this.options.appId;
 
     this._map = null;
@@ -168,7 +168,7 @@ L.OWM.LegendControl = L.Control.extend({
     this._container = L.DomUtil.create('div', 'owm-legend-container');
     this._container.style.display = 'none';
     this._legendCounter = 0;
-    this._legendContainer = new Array();
+    this._legendContainer = [];
   },
 
   onAdd: function () {
@@ -270,7 +270,7 @@ L.OWM.Current = L.Layer.extend({
     this._layer = L.layerGroup();
     this._timeoutId = null;
     this._requests = {};
-    this._markers = new Array();
+    this._markers = [];
     this._markedMarker = null;
     this._map = null;
     this._urlTemplate = 'https://api.openweathermap.org/data/2.5/box/{type}?{appId}cnt=300&format=json&units=metric&bbox={minlon},{minlat},{maxlon},{maxlat},10';
@@ -339,8 +339,6 @@ L.OWM.Current = L.Layer.extend({
       this._timeoutId = null;
     }
 
-    var _this = this;
-
     // clear requests for all types
     for (var typ in this._requests) {
       var request = this._requests[typ];
@@ -350,7 +348,7 @@ L.OWM.Current = L.Layer.extend({
     this._requests = {};
 
     if (this._map.getZoom() < this.options.minZoom) {
-      this.fire('owmloadingend', { type: _this.options.type });
+      this.fire('owmloadingend', { type: this.options.type });
       if (!this.options.keepOnMinZoom) {
         this._layer.clearLayers();
       }
@@ -368,7 +366,7 @@ L.OWM.Current = L.Layer.extend({
       this._processRequestedData(this, data);
     } else {
       // fetch new data from OWM
-      this.fire('owmloadingstart', { type: _this.options.type });
+      this.fire('owmloadingstart', { type: this.options.type });
       var url = this._urlTemplate
         .replace('{appId}', this.options.appId ? 'APPID=' + this.options.appId + '&' : '')
         .replace('{type}', this.options.type)
@@ -377,23 +375,23 @@ L.OWM.Current = L.Layer.extend({
         .replace('{maxlon}', bounds.getEast())
         .replace('{maxlat}', bounds.getNorth())
         ;
-      this._requests[this.options.type] = L.OWM.Utils.jsonp(url, function (data) {
-        delete _this._requests[_this.options.type];
+      this._requests[this.options.type] = L.OWM.Utils.jsonp(url, (data) => {
+        delete this._requests[this.options.type];
 
-        if (!_this._map) {
+        if (!this._map) {
           // Nothing to do if layer is gone but this request is still active
           return;
         }
 
-        if (_this.options.caching) {
-          _this._cache.set(data, _this._map.getBounds());
+        if (this.options.caching) {
+          this._cache.set(data, this._map.getBounds());
         }
-        _this._processRequestedData(_this, typeof data.list == 'undefined' ? new Array() : data.list);
-        _this.fire('owmloadingend', { type: _this.options.type });
+        this._processRequestedData(this, typeof data.list == 'undefined' ? [] : data.list);
+        this.fire('owmloadingend', { type: this.options.type });
       });
     }
     if (this.options.interval && this.options.interval > 0) {
-      this._timeoutId = window.setTimeout(function () { _this.update() }, 60000 * this.options.interval);
+      this._timeoutId = window.setTimeout(() => { this.update() }, 60000 * this.options.interval);
     }
   },
 
@@ -425,7 +423,7 @@ L.OWM.Current = L.Layer.extend({
     _this._layer.clearLayers();
 
     // add the cities as markers to the LayerGroup
-    _this._markers = new Array();
+    _this._markers = [];
     for (key in stations) {
       var marker;
       if (_this.options.markerFunction != null && typeof _this.options.markerFunction == 'function') {
@@ -794,7 +792,7 @@ L.OWM.CurrentCache = L.Class.extend({
     }
 
     // clip cached data to bounds
-    var clippedStations = new Array();
+    var clippedStations = [];
     var cnt = 0;
     for (var k in this._cachedData.list) {
       var station = this._cachedData.list[k];
@@ -827,18 +825,17 @@ L.OWM.Utils = {
   callbackCounter: 0,
 
   jsonp: function (url, callbackFn) {
-    var _this = this;
-    var elem = document.createElement('script');
-    var counter = this.callbackCounter++;
-    var callback = 'L.OWM.Utils.callbacks[' + counter + ']';
-    var abort = function () {
+    const elem = document.createElement('script');
+    const counter = this.callbackCounter++;
+    const callback = 'L.OWM.Utils.callbacks[' + counter + ']';
+    const abort = function () {
       if (elem.parentNode) {
         return elem.parentNode.removeChild(elem);
       }
     };
 
-    this.callbacks[counter] = function (data) {
-      delete _this.callbacks[counter];
+    this.callbacks[counter] = (data) => {
+      delete this.callbacks[counter];
       return callbackFn(data);
     };
 

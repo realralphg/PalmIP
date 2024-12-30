@@ -53,8 +53,9 @@
 </template>
 
 <script setup>
-import { createAlova, useRequest } from "alova";
-import GlobalFetch from "alova/GlobalFetch";
+import { createAlova } from "alova";
+import { useRequest } from "alova/client";
+import adapterFetch from "alova/fetch";
 import VueHook from "alova/vue";
 import { is } from "quasar";
 import { ref, computed, watch, toRaw } from "vue";
@@ -111,9 +112,9 @@ const props = defineProps({
 });
 const alova = createAlova({
   statesHook: VueHook,
-  requestAdapter: GlobalFetch(),
+  requestAdapter: adapterFetch(),
   responded: (response) => response.json(),
-  localCache: true,
+  cacheFor: true,
 });
 
 const select = ref(null),
@@ -144,11 +145,11 @@ const {
   (prms) =>
     alova.Get(gurl + (prms || params.value), {
       headers: { "X-CSCAPI-KEY": apiKey },
-      localCache: {
+      cacheFor: {
         mode: "restore",
         expire: 60 * 10 * 1000,
       },
-      transformData: (data) => {
+      transform: (data) => {
         const ov = props.optionValue;
         if (props.except?.length) {
           data = data.filter((e) => !props.only.includes(e[ov]));
@@ -199,7 +200,7 @@ const update = (data) => {
 
 const setParams = (data) => {
   if (!data) return;
-  let country = data.country.iso2 || data.country;
+  const country = data.country.iso2 || data.country;
   if (props.type === "states") {
     if (!data.country) {
       params.value = null;
@@ -207,7 +208,7 @@ const setParams = (data) => {
     }
     params.value = `/${country}/states`;
   } else if (props.type === "cities") {
-    let state = data.state.iso2 || data.state;
+    const state = data.state.iso2 || data.state;
     if (typeof state !== "string" || typeof country !== "string") {
       params.value = null;
       return;

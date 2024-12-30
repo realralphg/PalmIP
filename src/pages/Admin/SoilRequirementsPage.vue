@@ -6,7 +6,11 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createSoilRequirementRef.open()"
+            @click="
+              $refs.createSoilRequirementRef.open({
+                crop: '',
+              })
+            "
           />
         </template>
       </TitleSection>
@@ -117,7 +121,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateSoilRequirement from "src/components/Admin/CreateSoilRequirement.vue";
@@ -197,8 +201,8 @@ const {
         page: pagination.value.page,
         limit: pagination.value.rowsPerPage,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

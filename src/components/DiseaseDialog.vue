@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import CustomDialog from "./CustomDialog.vue";
 import { date } from "quasar";
 import { alova } from "src/boot/alova";
@@ -63,8 +63,8 @@ const {
 } = usePagination(
   () =>
     alova.Get(`diseases`, {
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 20000,
       },
     }),

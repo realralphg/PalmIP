@@ -215,49 +215,20 @@
 </template>
 
 <script setup>
-import { alova } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
-import { computed, ref } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import { computed, reactive, ref, watchEffect } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import LocalePicker from "src/components/LocalePicker.vue";
 import helpers from "src/plugins/helpers";
 import { useUserStore } from "src/stores/user-store";
-import { authValidator } from "src/plugins/processor";
 import { useQuasar } from "quasar";
+import { userTypes } from "src/data/collection";
+import { useInlineAuth } from "@toneflix/vue-auth";
 
 const $q = useQuasar();
 const errors = computed(() => error.value?.errors || {});
-const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const hidePassword = ref(true);
-
-const userTypes = [
-  {
-    value: "farmer",
-    label: "Farmer",
-  },
-  {
-    value: "processsor",
-    label: "Processsor",
-  },
-  {
-    value: "marketer",
-    label: "Marketer",
-  },
-  {
-    value: "transporter",
-    label: "Transporter",
-  },
-  {
-    value: "offtaker",
-    label: "Offtaker",
-  },
-  {
-    value: "researcher",
-    label: "Researcher",
-  },
-];
 
 const locales = ref({ countries: [], states: [], cities: [] });
 const locale = ref({
@@ -269,43 +240,31 @@ const localeData = (options, type) => {
   locales.value[type] = options;
 };
 
+const form = reactive({
+  name: "",
+  email: "",
+  phone: "",
+  password: "",
+  password_confirmation: "",
+  address: "",
+  country: "Nigeria",
+  state: "Kaduna",
+  city: "Kaduna",
+  type: userTypes[0].value,
+});
+
+const { register } = useInlineAuth();
+// Form handler
 const {
-  form,
+  send: attemptLogin,
   error,
   loading: registering,
-  send: attemptLogin,
   onSuccess,
-} = useForm(
-  (fd) => {
-    const instance = alova.Post("register", fd);
-    !instance.meta ? (instance.meta = {}) : null;
-    instance.meta.noAuth = true;
-    return instance;
-  },
-  {
-    initialForm: {
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      password_confirmation: "",
-      address: "",
-      country: "Nigeria",
-      state: "Kaduna",
-      city: "Kaduna",
-      type: userTypes[0].value,
-    },
-    initialData: {},
-    store: true,
-  },
-);
+} = register(form);
 
 // Success handler
-onSuccess(({ data }) => {
+onSuccess((data) => {
   userStore.setUser(data.data);
-
-  // Hide the loading
-  $q.loading.hide();
 
   // Notify the user
   helpers.notify(data.message, "success");
@@ -314,8 +273,15 @@ onSuccess(({ data }) => {
   // if ($q.platform.is.mobile) {
   //   router.push({ name: "intro.loading" });
   // } else {
-  authValidator(route, router);
+  router.replace({ name: "user.dashboard" });
   // }
+});
+
+watchEffect(() => {
+  // Show the loading
+  if (registering.value) $q.loading.show();
+  // Hide the loading
+  else $q.loading.hide();
 });
 </script>
 

@@ -25,7 +25,7 @@
                     size="xs"
                     icon="clear"
                     v-if="search"
-                    @click="(search = ''), (searching = true)"
+                    @click="((search = ''), (searching = true))"
                   />
                   <q-icon name="search" v-else-if="!searching" />
                 </template>
@@ -137,7 +137,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateUser from "src/components/Admin/CreateUser.vue";
@@ -224,8 +224,8 @@ const {
           ? "desc"
           : "asc",
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

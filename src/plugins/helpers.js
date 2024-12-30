@@ -3,7 +3,7 @@ import { Dialog, Notify, copyToClipboard } from 'quasar'
 
 import { useBootstrapStore } from '../stores/bootstrap';
 
-export default {
+const helpers = {
   chunk (arr, size = 2) {
     const chunkedArray = [];
     for (let i = 0; i < arr.length; i++) {
@@ -215,6 +215,7 @@ export default {
    *
    * @param {String} word
    * @param {Number} number
+   * @returns {string}
    */
   pluralize (word, number) {
     // If the number is 1, return the singular form of the word.
@@ -414,3 +415,42 @@ export default {
     return parseFloat((bytes / Math.pow(unitMultiple, unitChanges)).toFixed(decimals || 0)) + ' ' + unitNames[unitChanges];
   },
 }
+
+/**
+ * @description Read env variables from .env file and modify based on current environment
+ * @param { string } env
+ * @default "baseURL"
+ * @param { boolean } skipDev
+ * @returns { string|boolean|number }
+ */
+export const readEnv = (
+  env = 'baseURL',
+  skipDev = false,
+) => {
+  let val;
+
+  if (
+    import.meta.env.PROD ||
+    import.meta.env.VITE_ENVIRONMENT === 'production' ||
+    skipDev
+  ) {
+    // Production
+    val = import.meta.env['VITE_' + env];
+  } else {
+    // Development
+    val = import.meta.env['VITE_dev.' + env] ?? readEnv(env, true);
+  }
+
+  if (val === 'true' || val === 'false') {
+    return val === 'true';
+  }
+
+  if (val && !isNaN(Number(val)) && !isNaN(parseFloat(val))) {
+    return parseFloat(val);
+  }
+
+  return val;
+};
+
+export default helpers;
+export const notify = helpers.notify;

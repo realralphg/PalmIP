@@ -26,7 +26,7 @@
                     size="xs"
                     icon="clear"
                     v-if="search"
-                    @click="(search = ''), (searching = true)"
+                    @click="((search = ''), (searching = true))"
                   />
                   <q-icon name="search" v-else-if="!searching" />
                 </template>
@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import helpers from "src/plugins/helpers";
@@ -103,7 +103,7 @@ const sales_column = [
     name: "price",
     label: "Price",
     field: (e) =>
-      `${helpers.money(e.price || 0)}/${helpers.singularize(e.unit)}`,
+      `${helpers.money(e.price > 0 ? e.price : (e.market_price ?? 0))}/${helpers.singularize(e.unit)}`,
     sortable: true,
     align: "left",
     classes: "text-bold",
@@ -111,7 +111,10 @@ const sales_column = [
   {
     name: "available_qty",
     label: "Available Qty",
-    field: (e) => `${parseInt(e.available_qty).toLocaleString()} ${e.unit}`,
+    field: (e) =>
+      `${parseInt(
+        e.available_qty > 0 ? e.available_qty : (e.market_volume ?? 0),
+      ).toLocaleString()} ${e.unit}`,
     sortable: true,
     align: "right",
   },
@@ -143,8 +146,8 @@ const {
           ? "desc"
           : "asc",
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

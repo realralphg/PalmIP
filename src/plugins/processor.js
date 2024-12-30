@@ -42,44 +42,15 @@ export const error = (e, debug = true) => {
   return error;
 }
 
-/**
- * @description Read env variables from .env file and modify based on current environment
- * @param { String } env
- * @default "baseURL"
- * @returns { String }
- */
-export const readEnv = (env = "baseURL") => {
-  if (process.env.PROD || process.env.ENVIRONMENT === "production") {
-    // Production
-    if (env === "baseURL") {
-      return process.env.baseURL;
-    } else if (env === "rootURL") {
-      return process.env.rootURL;
-    } else if (env === "PUSHER_APP_KEY") {
-      return process.env.PUSHER_APP_KEY;
-    } else if (env === "PUSHER_APP_CLUSTER") {
-      return process.env.PUSHER_APP_CLUSTER;
-    }
-  } else {
-    // Development
-    if (env === "baseURL") {
-      return process.env.dev.baseURL;
-    } else if (env === "rootURL") {
-      return process.env.dev.rootURL;
-    } else if (env === "PUSHER_APP_KEY") {
-      return process.env.dev.PUSHER_APP_KEY;
-    } else if (env === "PUSHER_APP_CLUSTER") {
-      return process.env.dev.PUSHER_APP_CLUSTER;
-    }
-  }
-};
-
 export const reboot = (app, done) => {
   return new Promise((resolve, reject) => {
     const bootStore = useBootstrapStore();
     alova
       .Get("init", {
-        localCache: false,
+        cacheFor: {
+          mode: 'memory',
+          expire: 4.32e4, // 12 Hours
+        }
       }).send()
       .then(async ({ data }) => {
         if (data) {
@@ -111,7 +82,7 @@ export const refreshUser = (app) => {
 
     alova
       .Get("account", {
-        localCache: false,
+        cacheFor: false,
       }).send()
       .then(({ data }) => {
         const userStore = useUserStore();
@@ -148,46 +119,35 @@ export const roleRoute = (user, router, validated) => {
  */
 export const authValidator = (to, router) => {
   // Initialize the auth store
-  const authStore = useAuthStore();
+  const { token } = useAuthStore();
   // Initialize the bootstrap store
-  const bootStore = useBootstrapStore();
+  const { settings } = useBootstrapStore();
   // Initialize the user store
-  const userStore = useUserStore();
-
-  const user = userStore.user
+  const { user } = useUserStore();
 
   // Check if user is logged in when requesting a page that requires authentication
-  if (!authStore.token && (to.meta.requireAuth || to.meta.requireAdmin)) {
+  if (!token && (to.meta.requiresAuth || to.meta.requiresAdmin)) {
     // Redirect to Login if login required
     router.push({ name: 'login' });
-  } else if (authStore.token) {
-    const settings = bootStore.settings;
-
+  } else if (token) {
     // Set variables: User needs to be verified
-    const needsVerification =
+    const unverified =
       (!user.email_verified_at && settings?.verify_email) || (!user.phone_verified_at && settings?.verify_phone);
 
     // Set variables: User is verified
-    const isVerifiedUser = !needsVerification && !to.meta.requireVerification;
+    const verified = !unverified && !to.meta.requireVerification;
 
     // Redirect to the appropriate dashboard based on user role and verification status
-    if (to.meta.requireGuest) {
-      return roleRoute(user, router, isVerifiedUser || !needsVerification);
-    } else if (!to.meta.requireVerification && !isVerifiedUser && to.name !== 'logout') {
+    if (to.meta.requiresGuest) {
+      return roleRoute(user, router, verified || !unverified);
+    } else if (!to.meta.requireVerification && !verified && to.name !== 'logout') {
       if (!user.email_verified_at && settings.verify_email) {
         return router.push({ name: 'account.verify', params: { type: 'email' } });
       } else if (!user.phone_verified_at && settings.verify_phone) {
         return router.push({ name: 'account.verify', params: { type: 'phone' } });
       }
-    } else if (to.meta.requireAdmin && user.role !== 'admin') {
+    } else if (to.meta.requiresAdmin && user.role !== 'admin') {
       return router.replace({ name: 'user.dashboard' });
     }
-  }
-
-  // Perform a graceful login
-  if (to.name === 'logout' && authStore.token) {
-    authStore.logOut().then(() => {
-      router.replace({ name: "login" });
-    });
   }
 }

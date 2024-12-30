@@ -1,24 +1,46 @@
-import { defineStore } from "pinia";
+import { computed, toValue } from "vue";
 
-export const useUserStore = defineStore("user", {
-  state: () => ({
-    user: { id: null, role: null, city: 'Kaduna', country: 'Nigeria' },
-  }),
-  getters: {
-    getUser: (state) => state.user,
-  },
-  actions: {
-    clearUser () {
-      return new Promise((resolve) => {
-        this.user = { role: null };
-        resolve(true);
-      });
-    },
-    setUser (data) {
-      this.user = {
-        ...this.user,
-        ...data,
-      };
-    },
-  },
+import { defineStore } from "pinia";
+import { useAuth } from "@toneflix/vue-auth";
+
+export const useUserStore = defineStore("user", () => {
+
+  /**
+   * @type {{user:import('vue').Ref<{
+   * id: number;
+   * email:string;
+   * phone:string;
+   * role:string;
+   * city:string;
+   * country:string;
+   * phone_verified_at:string;
+   * email_verified_at:string;
+   * }}>} user
+   */
+  const { user } = useAuth();
+
+  const getUser = computed(() => user.value);
+
+  /**
+   * @param {typeof user.value|typeof user} data
+   */
+  const setUser = (data) => {
+    return new Promise((resolve) => {
+      user.value = Object.assign({}, user.value, toValue(data));
+      resolve(true);
+    });
+  };
+
+  const clearUser = () => {
+    return setUser({});
+  };
+
+  return {
+    user,
+    getUser,
+    setUser,
+    clearUser
+  };
+}, {
+  persist: true,
 });

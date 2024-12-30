@@ -391,11 +391,12 @@
 import { computed, ref } from "vue";
 import { useUserStore } from "stores/user-store";
 import { alova, axios, useRequest } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import LocalePicker from "src/components/LocalePicker.vue";
 import ImageCropper from "src/components/ImageCropper.vue";
 import helpers from "src/plugins/helpers";
 import LocationPicker from "src/components/maps/LocationPicker.vue";
+import { userTypes } from "src/data/collection";
 
 const hidePassword = ref(true);
 const userStore = useUserStore();
@@ -409,33 +410,6 @@ const errors = computed(
   () =>
     error.value?.errors || perror.value?.errors || lerror.value?.errors || {},
 );
-
-const userTypes = [
-  {
-    value: "farmer",
-    label: "Farmer",
-  },
-  {
-    value: "processsor",
-    label: "Processsor",
-  },
-  {
-    value: "marketer",
-    label: "Marketer",
-  },
-  {
-    value: "transporter",
-    label: "Transporter",
-  },
-  {
-    value: "offtaker",
-    label: "Offtaker",
-  },
-  {
-    value: "researcher",
-    label: "Researcher",
-  },
-];
 
 const locales = ref({ countries: [], states: [], cities: [] });
 const locale = ref({

@@ -1,12 +1,11 @@
-import { authValidator, reboot } from '../plugins/processor';
-
 import { Platform } from 'quasar';
-import { boot } from 'quasar/wrappers'
+import { defineBoot } from '#q-app/wrappers'
+import { reboot } from '../plugins/processor';
 import { useBootstrapStore } from '../stores/bootstrap';
 import { useUserStore } from '../stores/user-store'
 
-export default boot(({ app, router }) => {
-  router.beforeResolve(async (to) => {
+export default defineBoot(({ app, router }) => {
+  router.beforeResolve(async () => {
     // Load stores
     const userStore = useUserStore();
     const bootStore = useBootstrapStore();
@@ -27,12 +26,6 @@ export default boot(({ app, router }) => {
       app.config.globalProperties.$boot = bootStore
     }
 
-    /**
-     * Perform gracefull logout
-     * Validate user authentication
-     * Ensure user has sufficient privileges for the requested page
-     */
-    authValidator(to, router)
     return true;
   });
 })

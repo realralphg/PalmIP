@@ -119,7 +119,9 @@
             unelevated
             color="primary"
             label="Accept"
-            @click="(showMapLayers = false), emit('accept:location', location)"
+            @click="
+              ((showMapLayers = false), emit('accept:location', location))
+            "
           />
         </div>
         <q-inner-loading :showing="loading">
@@ -417,7 +419,7 @@ watch(searching, (i) => {
 const search = () => {
   doSearch(
     typeof searchQuery.value === "object"
-      ? searchQuery.value.value || searchQuery.value.label
+      ? searchQuery.value?.value || searchQuery.value?.label
       : searchQuery.value,
   );
 };

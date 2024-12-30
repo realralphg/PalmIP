@@ -9,13 +9,13 @@ const routes = [
     children: [
       {
         path: '/', name: 'home',
-        meta: { prefix: 'user', requireAuth: true, },
+        meta: { prefix: 'user', requiresAuth: true, },
         component: () => import('pages/User/DashboardPage.vue')
       },
       {
         path: 'market',
         name: 'market',
-        meta: { prefix: 'user', requireAuth: true, },
+        meta: { prefix: 'user', requiresAuth: true, },
         component: () => import('pages/MarketPage.vue')
       },
     ]

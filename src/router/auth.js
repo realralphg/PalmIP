@@ -1,8 +1,9 @@
+import { useAuthStore } from 'src/stores/auth-store';
 
 export default [
   {
     path: '/',
-    meta: { prefix: 'auth', requireAuth: false, requireGuest: true, },
+    meta: { prefix: 'auth', requiresAuth: false, requiresGuest: true, },
     component: () => import('layouts/PlainLayout.vue'),
     children: [
       {
@@ -18,8 +19,19 @@ export default [
       {
         name: 'logout',
         path: 'logout',
-        meta: { requireAuth: true, requireGuest: false },
+        meta: { requiresAuth: true, requiresGuest: false },
         component: () => import('pages/Auth/LoginPage.vue')
+      },
+      {
+        path: 'logout',
+        name: 'logout',
+        meta: { requiresAuth: true, requiresGuest: false },
+        beforeEnter: async () => {
+          const as = useAuthStore();
+          await as.logOut();
+          return { name: 'login' };
+        },
+        component: () => import('src/pages/Auth/LoginPage.vue'),
       },
     ]
   },

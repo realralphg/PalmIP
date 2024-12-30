@@ -62,7 +62,7 @@
 
 <script setup>
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";

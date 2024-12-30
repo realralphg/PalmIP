@@ -1,7 +1,6 @@
 <template>
   <CustomDialog
     :title="`${event.id ? 'Update' : 'Create'} Event: ${form.title}`"
-    @before-hide="reset"
     v-model="toggle"
   >
     <q-form class="q-col-gutter-md row" @submit="1" style="min-width: 400px">
@@ -145,7 +144,7 @@
 
 <script setup>
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
@@ -157,24 +156,23 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      date: date.formatDate(new Date(), "YYYY-MM-DD"),
-      title: "",
-      active: 1,
-    }),
-  },
 });
 
 const image = ref(null);
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const event = ref(props.data);
 const show_date_picker = ref(false);
+const event = defineModel("data", {
+  type: Object,
+  default: () => ({
+    date: date.formatDate(new Date(), "YYYY-MM-DD"),
+    title: "",
+    active: 1,
+  }),
+});
 
 const open = (i) => {
-  event.value = i || props.data;
+  event.value = i ?? event.value;
   event.value.date = date.formatDate(event.value.date, "YYYY-MM-DD");
   toggle.value = true;
 };
@@ -182,7 +180,6 @@ const open = (i) => {
 const {
   form,
   error,
-  reset,
   loading,
   send: create,
   onSuccess,

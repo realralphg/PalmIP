@@ -8,7 +8,9 @@
     <template #title>
       <span class="text-weight-bold">Users</span>
       |
-      <span class="text-capitalize">{{ helpers.pluralize(type) }}</span>
+      <span class="text-capitalize">
+        {{ helpers.pluralize(type).titleCase() }}
+      </span>
     </template>
 
     <template #top>
@@ -21,7 +23,8 @@
       <q-card-section v-if="!users?.length && !loading">
         <div class="full-width column items-center text-info q-gutter-sm">
           <q-icon size="2em" name="sentiment_satisfied" />
-          There are no {{ helpers.pluralize(type) }} for now!
+          There are no
+          {{ helpers.pluralize(type).titleCase().toLowerCase() }} for now!
         </div>
       </q-card-section>
     </template>
@@ -55,7 +58,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import helpers from "src/plugins/helpers";
 import { ref } from "vue";
@@ -82,8 +85,8 @@ const {
         limit,
         type: props.type,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 20000,
       },
     }),

@@ -80,11 +80,11 @@ const open = (slide) => {
 
 const { data } = useRequest(
   alova.Get(`announcements`, {
-    localCache: {
-      mode: "placeholder",
+    cacheFor: {
+      mode: "memory",
       expire: 3.6e6,
     },
-    transformData: (data) => data.data,
+    transform: (data) => data.data,
   }),
   {
     initialData: [],

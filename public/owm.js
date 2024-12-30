@@ -168,7 +168,7 @@ L.OWM.LegendControl = L.Control.extend({
     this._container = L.DomUtil.create('div', 'owm-legend-container');
     this._container.style.display = 'none';
     this._legendCounter = 0;
-    this._legendContainer = new Array();
+    this._legendContainer = [];
   },
 
   onAdd: function (map) {
@@ -269,7 +269,7 @@ L.OWM.Current = L.Layer.extend({
     this._layer = L.layerGroup();
     this._timeoutId = null;
     this._requests = {};
-    this._markers = new Array();
+    this._markers = [];
     this._markedMarker = null;
     this._map = null;
     this._urlTemplate = 'https://api.openweathermap.org/data/2.5/box/{type}?{appId}cnt=300&format=json&units=metric&bbox={minlon},{minlat},{maxlon},{maxlat},10';
@@ -387,7 +387,7 @@ L.OWM.Current = L.Layer.extend({
         if (_this.options.caching) {
           _this._cache.set(data, _this._map.getBounds());
         }
-        _this._processRequestedData(_this, typeof data.list == 'undefined' ? new Array() : data.list);
+        _this._processRequestedData(_this, typeof data.list == 'undefined' ? [] : data.list);
         _this.fire('owmloadingend', { type: _this.options.type });
       });
     }
@@ -424,7 +424,7 @@ L.OWM.Current = L.Layer.extend({
     _this._layer.clearLayers();
 
     // add the cities as markers to the LayerGroup
-    _this._markers = new Array();
+    _this._markers = [];
     for (var key in stations) {
       var marker;
       if (_this.options.markerFunction != null && typeof _this.options.markerFunction == 'function') {
@@ -793,7 +793,7 @@ L.OWM.CurrentCache = L.Class.extend({
     }
 
     // clip cached data to bounds
-    var clippedStations = new Array();
+    var clippedStations = [];
     var cnt = 0;
     for (var k in this._cachedData.list) {
       var station = this._cachedData.list[k];

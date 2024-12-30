@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import { ref } from "vue";
 import CustomDialog from "./CustomDialog.vue";
@@ -69,8 +69,8 @@ const {
 } = usePagination(
   () =>
     alova.Get(`soil/requirements`, {
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 20000,
       },
     }),

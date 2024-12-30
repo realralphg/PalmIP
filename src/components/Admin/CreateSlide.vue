@@ -1,8 +1,8 @@
 <template>
   <CustomDialog
-    :title="`${slide.id ? 'Update' : 'Create'} Slide: ${form.title}`"
-    @before-hide="reset"
+    :title="`${slide.id ? 'Update' : 'Create'} Slide: ${form.title || 'New Slide'}`"
     v-model="toggle"
+    @before-hide="reset"
   >
     <q-form class="q-col-gutter-md row" @submit="1" style="min-width: 400px">
       <div class="col-12 flex justify-center">
@@ -84,7 +84,7 @@
 
 <script setup>
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
@@ -95,22 +95,21 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      title: "",
-      active: 1,
-    }),
-  },
 });
 
 const image = ref(null);
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const slide = ref(props.data);
+const slide = defineModel("data", {
+  type: Object,
+  default: () => ({
+    title: "",
+    active: 1,
+  }),
+});
 
 const open = (i) => {
-  slide.value = i || props.data;
+  slide.value = i ?? slide.value;
   toggle.value = true;
 };
 

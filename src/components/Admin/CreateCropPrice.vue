@@ -1,7 +1,6 @@
 <template>
   <CustomDialog
-    :title="`${price.id ? 'Update' : 'Create'} Crop Price: ${form.item}`"
-    @before-hide="reset"
+    :title="`${price.id ? 'Update' : 'Create'} Crop Price: ${form.item ?? 'New Item'}`"
     v-model="toggle"
   >
     <q-form
@@ -40,6 +39,7 @@
           lazy-rules
           hide-bottom-space
           type="text"
+          hint="Leave at 0 to use quantity from marketplace stock"
           v-model="form.available_qty"
           :label="`Available Quantity (${form.unit})`"
           :error="!!errors.available_qty"
@@ -53,6 +53,7 @@
           hide-bottom-space
           type="text"
           v-model="form.price"
+          hint="Leave at 0 to use average price from marketplace"
           :label="`Price per ${helpers.singularize(form.unit)} (${
             boot.settings.currency_symbol
           })`"
@@ -102,7 +103,7 @@
 
 <script setup>
 import { alova } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import QIconPicker from "src/components/QIconPicker";
 import CustomDialog from "../CustomDialog.vue";
@@ -115,25 +116,24 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      item: "",
-      icon: "info",
-      unit: "Bags",
-      price: 0,
-      available_qty: 0,
-    }),
-  },
 });
 
 const boot = useBootstrapStore();
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const price = ref(props.data);
+const price = defineModel("data", {
+  type: Object,
+  default: () => ({
+    item: "",
+    icon: "info",
+    unit: "Bags",
+    price: 0,
+    available_qty: 0,
+  }),
+});
 
 const open = (i) => {
-  price.value = i || props.data;
+  price.value = i ?? price.value;
   toggle.value = true;
 };
 
@@ -148,7 +148,6 @@ const iconData = ref({
 const {
   form,
   error,
-  reset,
   loading,
   send: create,
   onSuccess,

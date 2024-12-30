@@ -61,8 +61,8 @@ const { data: weather, send: checkWeather } = useRequest(
     const instance = alova.Get(
       `https://api.weatherapi.com/v1/current.json?q=${user.value.city}&key=${WAPI_KEY}`,
       {
-        localCache: {
-          mode: "placeholder",
+        cacheFor: {
+          mode: "memory",
           expire: 3.6e6,
         },
       },
@@ -86,11 +86,11 @@ const weatherInterval = setInterval(() => {
 const { data: dashboard } = useRequest(
   alova.Get(`overview`, {
     params: { user_id: user.value.id },
-    localCache: {
-      mode: "placeholder",
+    cacheFor: {
+      mode: "memory",
       expire: 3.6e6,
     },
-    transformData: (data) => data.data,
+    transform: (data) => data.data,
   }),
   {
     initialData: {
@@ -104,11 +104,11 @@ const { data: locationUsers, send: getOverviewLocations } = useRequest(
   (params) =>
     axios.Get(`overview/locations`, {
       params: params,
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
-      transformData: (data) => data.data,
+      transform: (data) => data.data,
     }),
   {
     initialData: [],
@@ -126,43 +126,43 @@ const stats = computed(() => [
     icon: "people",
     color: "blue",
     label: "Farmers",
-    count: dashboard.value.stats.farmers || 0,
+    count: dashboard.value.stats?.farmers || 0,
     click: () => loadUsers("farmer"),
   },
   {
     icon: "precision_manufacturing",
     color: "green",
     label: "Processsors",
-    count: dashboard.value.stats.processsors || 0,
+    count: dashboard.value.stats?.processsors || 0,
     click: () => loadUsers("processsor"),
   },
   {
     icon: "storefront",
     color: "orange",
     label: "Marketers",
-    count: dashboard.value.stats.marketers || 0,
+    count: dashboard.value.stats?.marketers || 0,
     click: () => loadUsers("marketer"),
   },
   {
     icon: "agriculture",
     color: "teal",
     label: "Transporters",
-    count: dashboard.value.stats.transporters || 0,
+    count: dashboard.value.stats?.transporters || 0,
     click: () => loadUsers("transporter"),
   },
   {
     icon: "flight_takeoff",
     color: "amber",
     label: "Offtakers",
-    count: dashboard.value.stats.offtakers || 0,
+    count: dashboard.value.stats?.offtakers || 0,
     click: () => loadUsers("offtaker"),
   },
   {
     icon: "biotech",
     color: "purple",
-    label: "Researchers",
-    count: dashboard.value.stats.researchers || 0,
-    click: () => loadUsers("researcher"),
+    label: "Extn. Service",
+    count: dashboard.value.stats?.extension_service || 0,
+    click: () => loadUsers("extension_service"),
   },
   {
     sup: "° Celsius",
@@ -179,9 +179,9 @@ const stats = computed(() => [
   {
     icon: "coronavirus",
     color: "purple",
-    danger: dashboard.value.stats.disease_outbreaks > 0,
+    danger: dashboard.value.stats?.disease_outbreaks > 0,
     label: "Disease Outbreak",
-    count: dashboard.value.stats.disease_outbreaks || 0,
+    count: dashboard.value.stats?.disease_outbreaks || 0,
     tooltip: "Click for more information",
     click: () => diseaseDialogRef.value.toggle(),
   },
@@ -189,19 +189,19 @@ const stats = computed(() => [
     icon: "grass",
     color: "brown",
     label: "Soil Requirements",
-    count: dashboard.value.stats.soil_requirements || 0,
+    count: dashboard.value.stats?.soil_requirements || 0,
     tooltip: "Click for more information",
     click: () => soilRequirementDialogRef.value.toggle(),
   },
-  ...(dashboard.value.stats.current_prices || []).map((e) => {
+  ...(dashboard.value.stats?.current_prices || []).map((e) => {
     return {
       sup: ` ${e.unit}`,
       icon: e.icon || "fa-solid fa-wheat-awn",
       color: "blue-grey",
-      label: `${e.item} (${helpers.money(e.price || 0)}/${helpers.singularize(
+      label: `${e.item} (${helpers.money(e.price > 0 ? e.price : (e.market_price ?? 0))}/${helpers.singularize(
         e.unit,
       )})`,
-      count: e.available_qty || 0,
+      count: e.available_qty > 0 ? e.available_qty : (e.market_volume ?? 0),
     };
   }),
 ]);
