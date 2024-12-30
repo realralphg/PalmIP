@@ -6,7 +6,13 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createEventRef.open()"
+            @click="
+              $refs.createEventRef.open({
+                date: date.formatDate(new Date(), 'YYYY-MM-DD'),
+                title: '',
+                active: 1,
+              })
+            "
           />
         </template>
       </TitleSection>
@@ -117,13 +123,14 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateEvent from "src/components/Admin/CreateEvent.vue";
 import ContentRemover from "src/components/Admin/ContentRemover.vue";
 import helpers from "src/plugins/helpers";
 import { ref } from "vue";
+import { date } from "quasar";
 
 const createEventRef = ref();
 const sales_column = [
@@ -204,8 +211,8 @@ const {
         page: pagination.value.page,
         limit: pagination.value.rowsPerPage,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

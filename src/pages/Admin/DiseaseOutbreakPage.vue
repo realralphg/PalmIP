@@ -10,7 +10,13 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createDiseaseOutbreakRef.open()"
+            @click="
+              $refs.createDiseaseOutbreakRef.open({
+                name: '',
+                active: 1,
+                reported_at: date.formatDate(new Date(), 'YYYY-MM-DD'),
+              })
+            "
           />
         </template>
       </TitleSection>
@@ -94,7 +100,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateDiseaseOutbreak from "src/components/Admin/CreateDiseaseOutbreak.vue";
@@ -161,8 +167,8 @@ const {
         page: pagination.value.page,
         limit: pagination.value.rowsPerPage,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

@@ -1,170 +1,74 @@
+import { computed, ref } from "vue";
+
 import { defineStore } from "pinia";
 
-export const useBootstrapStore = defineStore("bootstrap", {
-  state: () => ({
-    configurations: {},
-    lost_page: null,
-    settings: { referral_bonus: 0, currency_symbol: "₦" },
-    website: {},
-    booted: null,
-    charts: {
-    },
-    cart: [],
-    app: { paymentInitData: null, geolocation: {} },
-    meta: {
-      reboots: null,
-    },
-    win_size: {
-      width: 0,
-      height: 0,
-      header: { width: 0, height: 0 },
-      footer: { width: 0, height: 0 },
-    },
-    updates: {
-      lastChecked: null,
-      available: false,
-      upgrade: false,
-      version: null,
-      link: null,
-    },
-    error404: {
-      message: null,
-      current: null,
-      isset: false,
-    },
-  }),
-  getters: {
-    getSettings (state) {
-      return state.settings;
-    },
-    getLostPage (state) {
-      return state.lost_page;
-    },
-    runtime (state) {
-      return ((dt2, dt1) => {
-        var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-        diff /= 60;
-        return Math.abs(Math.round(diff));
-      })(new Date(), new Date(state.booted));
-    },
-    getCart: (state) => {
-      return state.cart.map(item => {
-        item.fees_total = item.fees * item.qty
-        return item
-      })
-    },
-    getCartTotal: (state) => state.cart.reduce((acc, item) => {
-      return acc += (item.price * item.qty);
-    }, 0),
-    isBooted () {
-      return this.runtime <= 720
-    },
-  },
+export const useBootstrapStore = defineStore("bootstrap", () => {
+  const lost_page = ref(null)
+  const settings = ref({ referral_bonus: 0, currency_symbol: "₦", verify_email: false, verify_phone: false })
+  /** @type {import('vue').Ref<{id:number;item:string;unit:string;price:number;available_qty:number}[]>} */
+  const products = ref([])
+  const website = ref({})
+  const booted = ref(null)
+  const charts = ref({})
+  const app = ref({ paymentInitData: null, geolocation: {} })
+  const meta = ref({
+    reboots: 0,
+  })
 
-  actions: {
-    boot ({ settings, plans, configurations }) {
-      if (settings) {
-        this.settings = settings;
-      }
-      if (configurations) {
-        this.configurations = configurations;
-      }
-      if (plans) {
-        this.plans = plans;
-      }
-      this.booted = new Date().toString();
-      if (this.meta.reboots === null) {
-        this.meta.reboots = 0;
-      } else {
-        this.meta.reboots++;
-      }
-    },
-    setUpdate ({ lastChecked, available, version, link, upgrade = false, clear = false }) {
-      if (clear === true) {
-        this.updates = {
-          lastChecked: null,
-          available: false,
-          upgrade: false,
-          version: null,
-          link: null,
-        }
-      } else {
-        this.updates = {
-          lastChecked: lastChecked || (new Date).getTime(),
-          available: available || false,
-          upgrade: upgrade || false,
-          version: version || null,
-          link: link || null,
-        }
-      }
-    },
-    set404 ({ message, msg, current, isset }) {
-      this.error404 = {
-        message: message || msg || null,
-        current: current || null,
-        isset: isset || false,
-      }
-    },
-    setLostPage (page) {
-      this.lost_page = page;
-    },
-    setSettings (settings) {
-      this.settings = settings;
-    },
-    setAttr (data, attr) {
-      this[attr] = data;
-    },
-    clearCart () {
-      this.cart = [];
-    },
-    removeFromCart (data, type = null) {
-      this.setCart(data, type, false)
-    },
-    addToCart (data, type = null) {
-      this.setCart(data, type, true)
-    },
-    setQty (data, qty = 1, sub = false) {
-      this.cart.map(item => {
-        if (data?.id === item.id) {
-          item.qty = sub ? Math.floor(data.qty - qty) : Math.floor(data.qty + qty)
-        }
-        return item
-      })
-    },
-    setCart (data, type = null, add = true) {
-      // If data is an array, then let's loop through it and add each item to the cart
-      if (Array.isArray(data)) {
-        data.forEach((item) => {
-          this.setCart(item);
-        });
-      } else if (typeof data === "object") {
-        data = {
-          id: data.id,
-          qty: 1,
-          name: data.name,
-          fees: data.fees,
-          price: data.price || data.amount,
-          image_url: data.image_url,
-        }
-        // If data is an object, then we are adding to the cart
-        // If the item already exists in the cart, then we are updating it
-        // If the item does not exist in the cart, then we are adding it
-        let item = this.cart.find(
-          (item) => item.id === data.id && (type ? item.type === type : true)
-        );
-        if (add === false) {
-          // Remove the item
-          item && this.cart.splice(this.cart.indexOf(item), 1);
-        } else {
-          if (item) {
-            // Update the item
-            item.qty = data.qty;
-          } else {
-            // Add the item
-            this.cart.push(data);
-          }
-        }
-      }
-    },
-  },
+  const runtime = computed(() => {
+    return ((dt2, dt1) => {
+      var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+      diff /= 60;
+      return Math.abs(Math.round(diff));
+    })(new Date(), new Date(booted.value));
+  })
+
+  const isBooted = computed(() => {
+    return runtime.value <= 720
+  })
+
+  /**
+   *
+   * @param {{products:typeof products.value,settings:typeof settings.value}|{}} data
+   */
+  const boot = (data = {}) => {
+    if (data.settings) {
+      settings.value = data.settings;
+    }
+
+    if (data.products) {
+      products.value = data.products;
+    }
+
+    booted.value = new Date().toString();
+
+    if (meta.value.reboots === null) {
+      meta.value.reboots = 0;
+    } else {
+      meta.value.reboots++;
+    }
+  }
+
+  const setSettings = (_settings) => {
+    settings.value = _settings;
+  }
+
+  return {
+    lost_page,
+    settings,
+    products,
+    website,
+    booted,
+    charts,
+    app,
+    meta,
+
+    runtime,
+    isBooted,
+
+    setSettings,
+    boot,
+  };
+}, {
+  persist: true,
 });

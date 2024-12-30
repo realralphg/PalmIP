@@ -2,7 +2,7 @@
 export default [
   {
     path: '/admin',
-    meta: { prefix: 'admin', requireAuth: true, requireGuest: false, requireAdmin: true },
+    meta: { prefix: 'admin', requiresAuth: true, requiresGuest: false, requiresAdmin: true },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {

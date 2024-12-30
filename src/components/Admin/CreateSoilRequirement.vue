@@ -3,7 +3,6 @@
     :title="`${requirement.id ? 'Update' : 'Create'} Soil Requirement: ${
       form.crop
     }`"
-    @before-hide="reset"
     v-model="toggle"
   >
     <q-form class="q-col-gutter-md row" @submit="1" style="min-width: 400px">
@@ -94,7 +93,7 @@
 
 <script setup>
 import { alova } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
@@ -104,27 +103,25 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      crop: "",
-    }),
-  },
 });
 
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const requirement = ref(props.data);
+const requirement = defineModel("data", {
+  type: Object,
+  default: () => ({
+    crop: "",
+  }),
+});
 
 const open = (i) => {
-  requirement.value = i || props.data;
+  requirement.value = i ?? requirement.value;
   toggle.value = true;
 };
 
 const {
   form,
   error,
-  reset,
   loading,
   send: create,
   onSuccess,

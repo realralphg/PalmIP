@@ -87,61 +87,38 @@
 </template>
 
 <script setup>
-import { alova } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
-import { computed, ref } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import { computed, reactive, ref, watchEffect } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import helpers from "src/plugins/helpers";
-import { useUserStore } from "src/stores/user-store";
-import { authValidator } from "src/plugins/processor";
 import { useQuasar } from "quasar";
+import { useInlineAuth } from "@toneflix/vue-auth";
 
 const $q = useQuasar();
 const errors = computed(() => error.value?.errors || {});
-const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore();
 const hidePassword = ref(true);
 
-const {
-  form,
-  error,
-  loading,
-  send: attemptLogin,
-  onSuccess,
-  onError,
-} = useForm(
-  (fd) => {
-    const instance = alova.Post("login", fd);
-    !instance.meta ? (instance.meta = {}) : null;
-    instance.meta.noAuth = true;
-    return instance;
-  },
-  {
-    initialForm: {
-      password: "",
-      email: "",
-    },
-    initialData: {},
-  },
-);
+const form = reactive({
+  email: "",
+  password: "",
+  remember: true,
+});
+
+const { login } = useInlineAuth();
+
+// Form handler
+const { send: attemptLogin, error, loading, onSuccess, onError } = login(form);
 
 // Success handler
-onSuccess(({ data }) => {
-  // Set the user and token
-  userStore.setUser(data.data);
-
-  // Hide the loading
-  $q.loading.hide();
-
+onSuccess((data) => {
   // Notify the user
-  helpers.notify(data.message, "success");
+  if (data?.message) helpers.notify(data.message, "success");
 
   // Redirect the user
   // if ($q.platform.is.mobile) {
   //   router.push({ name: "intro.loading" });
   // } else {
-  authValidator(route, router);
+  router.replace({ name: "user.dashboard" });
   // }
 });
 
@@ -150,6 +127,13 @@ onError(() => {
   // Hide the loading
   $q.loading.hide();
   helpers.notify("Please Recheck Credentials", "info");
+});
+
+watchEffect(() => {
+  // Show the loading
+  if (loading.value) $q.loading.show();
+  // Hide the loading
+  else $q.loading.hide();
 });
 </script>
 

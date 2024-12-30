@@ -1,7 +1,6 @@
 <template>
   <CustomDialog
-    :title="`${item.id ? 'Update' : 'Create'} Marketplace Item: ${form.name}`"
-    @before-hide="reset"
+    :title="`${item.id ? 'Update' : 'Create'} Marketplace Item: ${form.name ?? 'New Item'}`"
     v-model="toggle"
   >
     <q-form class="q-col-gutter-md row" @submit="1" style="min-width: 400px">
@@ -26,7 +25,25 @@
           :error-message="errors.name"
         />
       </div>
-      <div class="col-6">
+      <div class="col-4">
+        <q-select
+          filled
+          lazy-rules
+          emit-value
+          map-options
+          hide-bottom-space
+          type="text"
+          option-label="item"
+          option-value="id"
+          v-model="form.produce_id"
+          label="Produce"
+          :options="products"
+          :error="!!errors.produce_id"
+          :error-message="errors.produce_id"
+          @update:model-value="form.quantity_unit = produce.unit"
+        />
+      </div>
+      <div class="col-4">
         <q-input
           filled
           lazy-rules
@@ -38,7 +55,7 @@
           :error-message="errors.type"
         />
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <q-input
           filled
           lazy-rules
@@ -53,6 +70,7 @@
       <div class="col-6">
         <q-input
           filled
+          readonly
           lazy-rules
           hide-bottom-space
           type="text"
@@ -83,7 +101,7 @@
           type="text"
           v-model="form.price"
           :label="`Price per ${helpers.singularize(form.quantity_unit)} (${
-            boot.settings.currency_symbol
+            settings.currency_symbol
           })`"
           :error="!!errors.price"
           :error-message="errors.price"
@@ -205,7 +223,7 @@
 
 <script setup>
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
@@ -213,6 +231,7 @@ import TUploader from "../TUploader.vue";
 import { useBootstrapStore } from "src/stores/bootstrap";
 import LocationPicker from "../maps/LocationPicker.vue";
 import LocalePicker from "../LocalePicker.vue";
+import { storeToRefs } from "pinia";
 
 const emit = defineEmits(["update:modelValue", "update:item", "created"]);
 const props = defineProps({
@@ -222,28 +241,30 @@ const props = defineProps({
   user: {
     type: Object,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      name: "",
-      grade: "A",
-      price: 0.0,
-      active: 1,
-      approved: 1,
-      quantity: 1,
-      quantity_unit: "KG",
-    }),
-  },
 });
 
-const boot = useBootstrapStore();
+const { settings, products } = storeToRefs(useBootstrapStore());
 const image = ref(null);
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const item = ref(props.data);
+const produce = computed(
+  () => (products.value ?? []).find((e) => e.id == form.value.produce_id) ?? {},
+);
+const item = defineModel("data", {
+  type: Object,
+  default: () => ({
+    name: "",
+    grade: "A",
+    price: 0.0,
+    active: 1,
+    approved: 1,
+    quantity: 1,
+    quantity_unit: "KG",
+  }),
+});
 
 const open = (i) => {
-  item.value = i || props.data;
+  item.value = i ?? item.value;
   toggle.value = true;
 };
 
@@ -270,7 +291,6 @@ const onPickLocation = (data) => {
 const {
   form,
   error,
-  reset,
   loading,
   send: create,
   onSuccess,
@@ -315,6 +335,7 @@ const {
       quantity_unit: item.value.quantity_unit,
       active: item.value.active ? 1 : 0,
       approved: item.value.approved ? 1 : 0,
+      produce_id: item.value.produce_id ?? products.value[0].id,
     },
     initialData: {},
     store: true,
@@ -353,6 +374,7 @@ watch(item, (i) => {
     quantity_unit: i.quantity_unit,
     active: i.active ? 1 : 0,
     approved: i.approved ? 1 : 0,
+    produce_id: i.produce_id ?? products.value[0].id,
   };
 });
 defineExpose({ open });

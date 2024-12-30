@@ -57,11 +57,11 @@ import helpers from "src/plugins/helpers";
 
 const { data } = useRequest(
   alova.Get(`slides`, {
-    localCache: {
-      mode: "placeholder",
+    cacheFor: {
+      mode: "memory",
       expire: 3.6e6,
     },
-    transformData: (data) => data.data,
+    transform: (data) => data.data,
   }),
   {
     initialData: [],

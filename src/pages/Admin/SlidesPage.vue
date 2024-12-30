@@ -6,7 +6,7 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createSlideRef.open()"
+            @click="$refs.createSlideRef.open({ active: true })"
           />
         </template>
       </TitleSection>
@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateSlide from "src/components/Admin/CreateSlide.vue";
@@ -163,8 +163,8 @@ const {
         page: pagination.value.page,
         limit: pagination.value.rowsPerPage,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

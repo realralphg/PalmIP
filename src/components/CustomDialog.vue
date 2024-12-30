@@ -7,7 +7,7 @@
     :maximized="maximized"
     :square="square"
     @before-show="emit('beforeShow', $event)"
-    @show="emit('dialog:ready', $event), emit('show', $event)"
+    @show="(emit('dialog:ready', $event), emit('show', $event))"
     @before-hide="emit('beforeHide', $event)"
     @hide="emit('hide', $event)"
     @update:model-value="
@@ -55,7 +55,7 @@
 
       <q-card-section
         :class="[cardSectionClass, 'scroll']"
-        :style="{ maxHeight: $slots.actions ? '85vh' : cardSectionHeight }"
+        :style="{ maxHeight: $slots.actions ? '75vh' : cardSectionHeight }"
       >
         <slot></slot>
       </q-card-section>

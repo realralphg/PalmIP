@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { QCalendar, parseDate } from "@quasar/quasar-ui-qcalendar";
 import { date } from "quasar";
 import { alova } from "src/boot/alova";
@@ -117,8 +117,8 @@ const { data: events } = usePagination(
         page,
         limit,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

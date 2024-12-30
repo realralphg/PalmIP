@@ -10,7 +10,12 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createCropRef.open()"
+            @click="
+              $refs.createCropRef.open({
+                price: 0,
+                available_qty: 0,
+              })
+            "
           />
         </template>
       </TitleSection>
@@ -37,7 +42,7 @@
                     size="xs"
                     icon="clear"
                     v-if="search"
-                    @click="(search = ''), (searching = true)"
+                    @click="((search = ''), (searching = true))"
                   />
                   <q-icon name="search" v-else-if="!searching" />
                 </template>
@@ -67,13 +72,48 @@
           v-model:pagination="pagination"
           @request="onRequest"
         >
+          <template v-slot:body-cell-price="props">
+            <q-td :props="props" class="text-left">
+              <q-item dense class="q-pl-none">
+                <q-item-section>
+                  <q-item-label class="text-weight-bold">
+                    {{ props.value }}
+                  </q-item-label>
+                  <q-item-label caption class="">
+                    {{ helpers.money(props.row.market_price ?? 0) }}/{{
+                      helpers.singularize(props.row.unit)
+                    }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-available_qty="props">
+            <q-td :props="props" class="text-left">
+              <q-item dense class="q-pl-none">
+                <q-item-section>
+                  <q-item-label class="text-weight-bold">
+                    {{ props.value }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    {{
+                      parseInt(props.row.market_volume ?? 0).toLocaleString()
+                    }}
+                    {{ props.row.unit }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-td>
+          </template>
           <template v-slot:body-cell-actions="props">
             <q-td :props="props" class="text-left">
               <q-btn
                 size="12px"
                 color="primary"
                 label="Edit"
-                @click="$refs.createCropRef.open(props.row)"
+                @click="
+                  ((data = props.row), $refs.createCropRef.open(props.row))
+                "
               />
               <ContentRemover
                 class="q-ml-sm"
@@ -101,6 +141,7 @@
     </q-card>
     <CreateCropPrice
       ref="createCropRef"
+      v-model:data="data"
       @created="(e) => prices.unshift(e)"
       @update:item="
         (e) => {
@@ -115,7 +156,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateCropPrice from "src/components/Admin/CreateCropPrice.vue";
@@ -123,6 +164,7 @@ import ContentRemover from "src/components/Admin/ContentRemover.vue";
 import helpers from "src/plugins/helpers";
 import { ref } from "vue";
 
+const data = ref({});
 const createCropRef = ref();
 const sales_column = [
   {
@@ -183,8 +225,8 @@ const {
           ? "desc"
           : "asc",
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

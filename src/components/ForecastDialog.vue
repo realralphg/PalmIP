@@ -83,8 +83,8 @@ const {
     const instance = alova.Get(
       `https://api.weatherapi.com/v1/forecast.json?q=${forecastQuery.value}&days=14&key=${WAPI_KEY}`,
       {
-        localCache: {
-          mode: "placeholder",
+        cacheFor: {
+          mode: "memory",
           expire: 20000,
         },
       },

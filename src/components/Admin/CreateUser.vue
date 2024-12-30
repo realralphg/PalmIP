@@ -4,9 +4,8 @@
     position="right"
     full-height
     :title="`${user.id ? 'Update' : 'Create'} User: ${
-      user.fullname || form.firstname
+      user.fullname ?? form.firstname ?? 'New User'
     }`"
-    @before-hide="reset"
     v-model="toggle"
   >
     <q-list>
@@ -286,57 +285,32 @@
 <script setup>
 import { computed, ref, watch, watchEffect } from "vue";
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import LocalePicker from "src/components/LocalePicker.vue";
 import ImageCropper from "src/components/ImageCropper.vue";
 import helpers from "src/plugins/helpers";
 import LocationPicker from "src/components/maps/LocationPicker.vue";
 import CustomDialog from "../CustomDialog.vue";
+import { userTypes } from "src/data/collection";
 
 const emit = defineEmits(["update:modelValue", "update:item", "created"]);
 const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
 });
 
-const user = ref(props.data);
 const errors = computed(() => error.value?.errors || {});
 const hidePassword = ref(true);
 
-const userTypes = [
-  {
-    value: "farmer",
-    label: "Farmer",
-  },
-  {
-    value: "processsor",
-    label: "Processsor",
-  },
-  {
-    value: "marketer",
-    label: "Marketer",
-  },
-  {
-    value: "transporter",
-    label: "Transporter",
-  },
-  {
-    value: "offtaker",
-    label: "Offtaker",
-  },
-  {
-    value: "researcher",
-    label: "Researcher",
-  },
-];
-
 const toggle = ref(props.modelValue);
 const locales = ref({ countries: [], states: [], cities: [] });
+
+const user = defineModel("data", {
+  type: Object,
+  default: () => ({}),
+});
+
 const locale = ref({
   city: {},
   state: { name: "Kaduna", iso2: "KD" },
@@ -370,7 +344,6 @@ const {
   send: create,
   form,
   error,
-  reset,
   onError,
   loading,
   uploading,

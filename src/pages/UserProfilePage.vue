@@ -77,7 +77,8 @@
                       :key="item.id"
                       v-for="item in marketItems"
                       v-intersection="
-                        (e) => onIntersectMarket(e, i === marketItems.length - 1, i)
+                        (e) =>
+                          onIntersectMarket(e, i === marketItems.length - 1, i)
                       "
                     >
                       <q-item-section avatar>
@@ -107,7 +108,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova, useRequest } from "src/boot/alova";
 import helpers from "src/plugins/helpers";
 import { useRoute } from "vue-router";
@@ -116,7 +117,7 @@ const route = useRoute();
 
 const { data: user, loading } = useRequest(
   alova.Get(`users/${route.params.user}`, {
-    transformData: (data) => data.data,
+    transform: (data) => data.data,
   }),
   {
     initialData: { market_count: 0 },
@@ -136,8 +137,8 @@ const {
         limit,
         user_id: route.params.user,
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

@@ -6,7 +6,17 @@
           <q-btn
             label="Create New"
             color="primary"
-            @click="$refs.createMarketItemRef.open()"
+            @click="
+              $refs.createMarketItemRef.open({
+                name: '',
+                grade: 'A',
+                price: 0.0,
+                active: 1,
+                approved: 1,
+                quantity: 1,
+                quantity_unit: 'KG',
+              })
+            "
           />
         </template>
       </TitleSection>
@@ -34,7 +44,7 @@
                     size="xs"
                     icon="clear"
                     v-if="search"
-                    @click="(search = ''), (searching = true)"
+                    @click="((search = ''), (searching = true))"
                   />
                   <q-icon name="search" v-else-if="!searching" />
                 </template>
@@ -76,10 +86,10 @@
 
                 <q-item-section>
                   <q-item-label class="text-weight-bold">
-                    {{ props.row.product_name }}
+                    {{ props.row.produce ?? props.row.product_name }}
                   </q-item-label>
                   <q-item-label caption class="">
-                    {{ helpers.trunc(props.row.address, 30) }}
+                    {{ props.row.product_name }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -144,7 +154,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import CreateMarketItem from "src/components/Admin/CreateMarketItem.vue";
@@ -237,8 +247,8 @@ const {
           ? "desc"
           : "asc",
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

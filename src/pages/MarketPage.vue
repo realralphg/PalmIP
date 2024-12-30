@@ -35,7 +35,7 @@
                     size="xs"
                     icon="clear"
                     v-if="search"
-                    @click="(search = ''), (searching = true)"
+                    @click="((search = ''), (searching = true))"
                   />
                   <q-icon name="search" v-else-if="!searching" />
                 </template>
@@ -100,10 +100,26 @@
 
                 <q-item-section>
                   <q-item-label class="text-weight-bold">
-                    {{ props.row.product_name }}
+                    {{ props.row.produce ?? props.row.product_name }}
                   </q-item-label>
                   <q-item-label caption class="">
-                    {{ helpers.trunc(props.row.address, 30) }}
+                    {{ props.row.product_name }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-quantity="props">
+            <q-td :props="props">
+              <q-item class="q-pl-none">
+                <q-item-section>
+                  <q-item-label class="text-weight-bold">
+                    {{ props.value }}
+                  </q-item-label>
+                  <q-item-label caption class="">
+                    {{ helpers.money(props.row.price) }}/{{
+                      helpers.singularize(props.row.quantity_unit).titleCase()
+                    }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -137,7 +153,7 @@
 </template>
 
 <script setup>
-import { usePagination } from "@alova/scene-vue";
+import { usePagination } from "alova/client";
 import { alova } from "src/boot/alova";
 import TitleSection from "src/components/TitleSection.vue";
 import helpers from "src/plugins/helpers";
@@ -211,8 +227,8 @@ const {
           ? "desc"
           : "asc",
       },
-      localCache: {
-        mode: "placeholder",
+      cacheFor: {
+        mode: "memory",
         expire: 3.6e6,
       },
     }),

@@ -1,67 +1,84 @@
-import { alova } from "../boot/alova.js";
-import { defineStore } from "pinia";
-import { useBootstrapStore } from "./bootstrap";
-import { useUserStore } from "./user-store";
+import { computed, ref } from "vue";
 
-export const useAuthStore = defineStore("auth", {
-  state: () => ({
-    token: null,
-    roles: [],
-    redirect: null,
-    permissions: [],
-  }),
-  getters: {
-    isLoggedIn (state) {
-      return state.token !== null;
-    },
-  },
-  actions: {
-    setToken (token, type = "token") {
-      this[type] = token;
-    },
-    setLoginData (data) {
-      ['roles', 'permissions'].map(key => {
-        if (data[key]) {
-          this[key] = data[key]
-        }
-      });
-    },
-    clearAuth () {
-      return new Promise((resolve) => {
-        this.token = null;
-        this.roles = [];
-        this.permissions = [];
-        resolve(true);
-      });
-    },
-    redirectTo (route) {
-      this.redirect = route;
-    },
-    async logOut () {
-      return alova
-        .Post("/logout", {}, {
-          transformData: data => data,
-        }).send()
-        .then(() => {
-          this.roles = [];
-          this.permissions = [];
-          this.token = null;
-          useUserStore().clearUser();
-          useBootstrapStore().app = {
-            roles: [],
-            permissions: [],
-            privilege_map: {},
-          };
-          useBootstrapStore().setLostPage(null);
-          return true;
-        })
-        .catch(({ data }) => {
-          if (data.status === 401) {
-            this.token = null;
-            useUserStore().clearUser();
-            return true;
-          }
-        });
-    },
-  },
+import { defineStore } from "pinia";
+import { useAuth } from "@toneflix/vue-auth";
+import { useBootstrapStore } from "./bootstrap";
+
+export const useAuthStore = defineStore("auth", () => {
+  const { token, isAuthenticated, logout } = useAuth();
+
+  /** @type {import('vue').Ref<string[]>} roles */
+  const roles = ref([]);
+
+  /** @type {import('vue').Ref<string|null>} redirect */
+  const redirect = ref([]);
+
+  /** @type {import('vue').Ref<string[]>} permissions */
+  const permissions = ref([]);
+
+  const isLoggedIn = computed(() => token.value !== null && isAuthenticated.value);
+
+  const logOut = async () => {
+    const state = await logout()
+    roles.value = [];
+    permissions.value = [];
+    useBootstrapStore().app = {
+      roles: [],
+      permissions: [],
+      geolocation: {},
+      privilege_map: {},
+      paymentInitData: null,
+    };
+
+    return state
+  }
+
+  /**
+   * @param {string} _token
+   * @param {'token'} type */
+  const setToken = (_token, type = "token") => {
+    if (type === 'token') {
+      token.value = _token
+    }
+  }
+
+  /** @param {{roles:string[],permissions:string[]}} data */
+  const setLoginData = (data) => {
+    if (data.roles) {
+      roles.value = data.roles
+    }
+    if (data.permissions) {
+      permissions.value = data.permissions
+    }
+  }
+
+  const clearAuth = async () => {
+    await logOut();
+    token.value = null;
+    roles.value = [];
+    permissions.value = [];
+    isAuthenticated.value = false
+  }
+
+  const redirectTo = (route) => {
+    redirect.value = route;
+  }
+
+  return {
+    token,
+    roles,
+    redirect,
+    permissions,
+
+    logOut,
+    setToken,
+    clearAuth,
+    redirectTo,
+    setLoginData,
+
+    isLoggedIn,
+    isAuthenticated,
+  }
+}, {
+  persist: true,
 });

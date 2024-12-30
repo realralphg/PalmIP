@@ -97,7 +97,7 @@
 
 <script setup>
 import { axios } from "src/boot/alova";
-import { useForm } from "@alova/scene-vue";
+import { useForm } from "alova/client";
 import { computed, ref, watch, watchEffect } from "vue";
 import CustomDialog from "../CustomDialog.vue";
 import helpers from "src/plugins/helpers";
@@ -109,24 +109,24 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
   },
-  data: {
-    type: Object,
-    default: () => ({
-      name: "",
-      active: 1,
-      reported_at: date.formatDate(new Date(), "YYYY-MM-DD"),
-    }),
-  },
 });
 
 const image = ref(null);
 const errors = computed(() => error.value?.errors || {});
 const toggle = ref(props.modelValue);
-const outbreak = ref(props.data);
 const show_date_picker = ref(false);
 
+const outbreak = defineModel("data", {
+  type: Object,
+  default: () => ({
+    name: "",
+    active: 1,
+    reported_at: date.formatDate(new Date(), "YYYY-MM-DD"),
+  }),
+});
+
 const open = (i) => {
-  outbreak.value = i || props.data;
+  outbreak.value = i ?? outbreak.value;
   outbreak.value.reported_at = date.formatDate(
     outbreak.value.reported_at,
     "YYYY-MM-DD",

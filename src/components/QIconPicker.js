@@ -148,16 +148,8 @@ export default defineComponent({
           } else {
             try {
               // If vite
-              if (typeof import.meta !== 'undefined' && import.meta.env !== undefined) {
-                viteImporter(iconSet)
-              } else {
-                // Else if webpack
-                data.value.iconsList = require(
-                  `@quasar/quasar-ui-qiconpicker/src/components/icon-set/${iconSet}.js`,
-                ).default.icons;
-                console.info(`Loaded ${data.value.iconsList.length} icons.`);
-              }
-            } catch (e) {
+              viteImporter(iconSet)
+            } catch {
               console.error(
                 `QIconPicker: cannot find icon set found called ${iconSet}`,
               );

@@ -2,7 +2,7 @@
 export default [
   {
     path: '/user',
-    meta: { prefix: 'user', requireAuth: true, requireGuest: false, },
+    meta: { prefix: 'user', requiresAuth: true, requiresGuest: false, },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
